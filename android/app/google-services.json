@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "13226756004",
+    "firebase_url": "https://burntbutter-11357.firebaseio.com",
+    "project_id": "burntbutter-11357",
+    "storage_bucket": "burntbutter-11357.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13226756004:android:405dac84d52320da76e331",
+        "android_client_info": {
+          "package_name": "com.burntoast.butter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13226756004-j7faus1fr6ghpmomla9hnc87tdfaop42.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.burntoast.butter",
+            "certificate_hash": "1da5ec92f69916ff6646943dc4ec8aa622cfd269"
+          }
+        },
+        {
+          "client_id": "13226756004-egg37h1jji4bt3osro5ch522m8tjglh3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1cOPhdX58D5ECTCsoOY4FtRotoev9O6w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13226756004-egg37h1jji4bt3osro5ch522m8tjglh3.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "13226756004-c99l5imia92v0o263glnr2fd333kmn50.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.burntoast.butter"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
