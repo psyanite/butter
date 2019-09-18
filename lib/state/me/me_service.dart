@@ -103,10 +103,10 @@ class MeService {
     return Store.fromToaster(json);
   }
 
-  static Future<bool> setProfilePicture({userId, pictureUrl}) async {
+  static Future<bool> setCoverImage({storeId, pictureUrl}) async {
     String query = """
       mutation {
-        setStoreCoverImage(userId: $userId, picture: "$pictureUrl") {
+        setStoreCoverImage(storeId: $storeId, picture: "$pictureUrl") {
           cover_image
         }
       }

@@ -1,11 +1,13 @@
+import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:butter/components/photo/carousel.dart';
 import 'package:butter/components/photo/carousel_page.dart';
-import 'package:butter/components/photo/image_preview.dart';
+import 'package:butter/components/photo/photo_preview.dart';
 import 'package:butter/presentation/components.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 
 class PhotoSelector extends StatelessWidget {
@@ -16,14 +18,14 @@ class PhotoSelector extends StatelessWidget {
   final int max;
 
   PhotoSelector({Key key, this.images, this.onSelectImages, this.addText = 'Add Photos', this.changeText = 'Change Photos', this.max = 10})
-    : super(key: key);
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var buttonText = images.isNotEmpty ? changeText : addText;
     return Column(
       children: <Widget>[
-        if (images.length == 1) ImagePreview(images[0]),
+        if (images.length == 1) PhotoPreview(images[0]),
         if (images.length > 1) _carousel(),
         SmallButton(
           onPressed: () => _loadAssets(context),
@@ -51,18 +53,19 @@ class PhotoSelector extends StatelessWidget {
 
     try {
       resultList = await MultiImagePicker.pickImages(
-        maxImages: max,
-        enableCamera: true,
-        materialOptions: MaterialOptions(
-          allViewTitle: 'Gallery',
-          selectionLimitReachedText: 'Sorry, maximum number of photos reached',
-          selectCircleStrokeColor: '#FFAB40',
-          okButtonDrawable: 'Next',
-          textOnNothingSelected: 'Oops! Select an image',
-          actionBarColor: '#FFAB40',
-          actionBarTitle: '#FFFFFF',
-        ));
-    } catch (e) {
+          maxImages: max,
+          enableCamera: true,
+          materialOptions: MaterialOptions(
+            actionBarColor: '#FFAB40',
+            actionBarTitle: 'Gallery',
+            lightStatusBar: false,
+            statusBarColor: '#FFAB40',
+            allViewTitle: 'All',
+            selectCircleStrokeColor: '#FFAB40',
+            selectionLimitReachedText: 'Sorry, maximum number of photos reached',
+            textOnNothingSelected: 'Oops! Select an image',
+          ));
+    } on PlatformException catch (e) {
       snack(context, "Error " + e.toString());
     }
 

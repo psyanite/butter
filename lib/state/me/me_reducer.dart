@@ -11,7 +11,7 @@ Reducer<MeState> meReducer = combineReducers([
   new TypedReducer<MeState, FetchStoreSuccess>(fetchStore),
   new TypedReducer<MeState, FetchPostsSuccess>(fetchPosts),
   new TypedReducer<MeState, FetchRewardsSuccess>(fetchRewards),
-  new TypedReducer<MeState, SetMyProfilePicture>(setMyProfilePicture),
+  new TypedReducer<MeState, SetCoverImage>(setCoverImage),
 ]);
 
 MeState loginSuccess(MeState state, LoginSuccess action) {
@@ -38,6 +38,6 @@ MeState fetchRewards(MeState state, FetchRewardsSuccess action) {
   return state.setRewards(action.rewards);
 }
 
-MeState setMyProfilePicture(MeState state, SetMyProfilePicture action) {
+MeState setCoverImage(MeState state, SetCoverImage action) {
   return state.copyWith(store: state.store.copyWith(coverImage: action.picture));
 }

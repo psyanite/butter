@@ -22,19 +22,19 @@ class SetPictureScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, dynamic>(
-      converter: _Props.fromStore,
+      converter: (Store<AppState> store) => _Props.fromStore(store),
       builder: (context, props) {
-        return _Presenter(setProfilePicture: props.setProfilePicture, myId: props.myId);
+        return _Presenter(setCoverImage: props.setCoverImage, myStoreId: props.myStoreId);
       },
     );
   }
 }
 
 class _Presenter extends StatefulWidget {
-  final Function setProfilePicture;
-  final int myId;
+  final Function setCoverImage;
+  final int myStoreId;
 
-  _Presenter({Key key, this.setProfilePicture, this.myId}) : super(key: key);
+  _Presenter({Key key, this.setCoverImage, this.myStoreId}) : super(key: key);
 
   @override
   _PresenterState createState() => _PresenterState();
@@ -58,7 +58,7 @@ class _PresenterState extends State<_Presenter> {
             ],
           ),
         ),
-        if (_showOverlay) _UploadOverlay(image: _image, myId: widget.myId, setProfilePicture: widget.setProfilePicture)
+        if (_showOverlay) _UploadOverlay(image: _image, myStoreId: widget.myStoreId, setCoverImage: widget.setCoverImage)
       ],
     );
   }
@@ -159,32 +159,36 @@ class _PresenterState extends State<_Presenter> {
 
   _loadImages(photos) async {
     var image = photos[0];
-    setState(() => _image = image);
     var byteData = await image.getByteData(quality: 80);
-    _imageData = byteData.buffer.asUint8List();
+    this.setState(() {
+      _image = image;
+      _imageData = byteData.buffer.asUint8List();
+    });
   }
 }
 
 class _Props {
-  final Function setProfilePicture;
-  final int myId;
+  final Function setCoverImage;
+  final int myStoreId;
 
-  _Props({this.setProfilePicture, this.myId});
+  _Props({this.setCoverImage, this.myStoreId});
 
   static fromStore(Store<AppState> store) {
     return _Props(
-      setProfilePicture: (picture) => store.dispatch(SetMyProfilePicture(picture)),
-      myId: store.state.me.admin?.id,
+      setCoverImage: (picture) {
+        store.dispatch(SetCoverImage(picture));
+      },
+      myStoreId: store.state.me.store?.id,
     );
   }
 }
 
 class _UploadOverlay extends StatefulWidget {
   final Asset image;
-  final int myId;
-  final Function setProfilePicture;
+  final int myStoreId;
+  final Function setCoverImage;
 
-  _UploadOverlay({Key key, this.image, this.myId, this.setProfilePicture}) : super(key: key);
+  _UploadOverlay({Key key, this.image, this.myStoreId, this.setCoverImage}) : super(key: key);
 
   @override
   _UploadOverlayState createState() => _UploadOverlayState();
@@ -234,14 +238,15 @@ class _UploadOverlayState extends State<_UploadOverlay> {
       return;
     }
 
-    var result = await MeService.setProfilePicture(userId: widget.myId, pictureUrl: url);
+    var result = await MeService.setCoverImage(storeId: widget.myStoreId, pictureUrl: url);
     if (result != true) {
       setState(() => _error = "Oops! Something went wrong, please try again.");
       return;
     }
 
-    widget.setProfilePicture(url);
+    widget.setCoverImage(url);
     Navigator.popUntil(context, ModalRoute.withName(MainRoutes.home));
+    Navigator.pushReplacementNamed(context, MainRoutes.home);
     return;
   }
 

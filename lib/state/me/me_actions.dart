@@ -44,8 +44,8 @@ class FetchPostsSuccess {
 
 class ClearPosts {}
 
-class SetMyProfilePicture {
+class SetCoverImage {
   final String picture;
 
-  SetMyProfilePicture(this.picture);
+  SetCoverImage(this.picture);
 }

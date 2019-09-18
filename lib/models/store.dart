@@ -36,6 +36,7 @@ class Store {
   Store copyWith({String coverImage}) {
     return Store(
       id: this.id,
+      name: this.name,
       phoneNumber: this.phoneNumber,
       coverImage: coverImage ?? this.coverImage,
       address: this.address,

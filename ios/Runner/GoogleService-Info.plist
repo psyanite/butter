@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>13226756004-c99l5imia92v0o263glnr2fd333kmn50.apps.googleusercontent.com</string>
+	<string>131882945-4s5lfj3q83b4c0t7k2bjgl0j7c4p351p.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.13226756004-c99l5imia92v0o263glnr2fd333kmn50</string>
+	<string>com.googleusercontent.apps.131882945-4s5lfj3q83b4c0t7k2bjgl0j7c4p351p</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAUeUBvX1YD7w4lJtsZS0n4-u-EJzMi2IE</string>
+	<string>AIzaSyDtpTuSf6SWDNapESbfxS7rugxmLS2-njE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>13226756004</string>
+	<string>131882945</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.burntoast.butter</string>
 	<key>PROJECT_ID</key>
-	<string>burntbutter-11357</string>
+	<string>burntbutter-fix</string>
 	<key>STORAGE_BUCKET</key>
-	<string>burntbutter-11357.appspot.com</string>
+	<string>burntbutter-fix.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:13226756004:ios:0c31a19360dbe98f76e331</string>
+	<string>1:131882945:ios:5e456f0e76e1391f345940</string>
 	<key>DATABASE_URL</key>
-	<string>https://burntbutter-11357.firebaseio.com</string>
+	<string>https://burntbutter-fix.firebaseio.com</string>
 </dict>
 </plist>

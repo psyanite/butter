@@ -131,23 +131,37 @@ class _PresenterState extends State<_Presenter> {
     });
   }
 
+  _refresh() async {
+    var fresh = await MeService.fetchPostsByStoreId(storeId: widget.store.id, limit: 12, offset: 0);
+    this.setState(() {
+      _limit = 12;
+      _posts = fresh;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     if (widget.store == null) return Scaffold(body: LoadingCenter());
     return Scaffold(
       endDrawer: _drawer(context),
-      body: CustomScrollView(
-        slivers: <Widget>[
-          _appBar(),
-          if (widget.rewards.isNotEmpty) _rewards(context),
-          PostList(
-            noPostsView: Text('Looks like ${widget.store.name} doesn\'t have any reviews yet.'),
-            postListType: PostListType.forStore,
-            posts: _posts,
-            removeFromList: removeFromList,
-          ),
-          if (_loading == true) LoadingSliver(),
-        ],
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _refresh();
+          await Future.delayed(Duration(seconds: 1));
+        },
+        child: CustomScrollView(
+          slivers: <Widget>[
+            _appBar(),
+            if (widget.rewards.isNotEmpty) _rewards(context),
+            PostList(
+              noPostsView: Text('Looks like ${widget.store.name} doesn\'t have any reviews yet.'),
+              postListType: PostListType.forStore,
+              posts: _posts,
+              removeFromList: removeFromList,
+            ),
+            if (_loading == true) LoadingSliver(),
+          ],
+        ),
       ),
     );
   }
