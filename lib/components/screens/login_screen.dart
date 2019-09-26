@@ -52,27 +52,33 @@ class _PresenterState extends State<_Presenter> {
             colors: [Color(0xFFffc86b), Color(0xFFffab40), Color(0xFFc45d35)],
           ),
         ),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Image.asset('assets/images/loading-icon.png', height: 200.0),
-              Container(height: 20.0),
-              _textField('Username', (val) => setState(() => _un = val), false),
-              Container(height: 20.0),
-              _textField('Password', (val) => setState(() => _pw = val), true),
-              _forgotPassword(context),
-              Container(height: 30.0),
-              WhiteButton(text: "Login", onPressed: () => _submit(context)),
-              _signUp(context),
-              _privacy(context),
-            ],
-          ),
-        ),
+        child: Builder(builder: (context) {
+          return Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.0),
+            child: _content(context),
+          );
+        }),
       ),
+    );
+  }
+
+  Widget _content(context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Image.asset('assets/images/loading-icon.png', height: 200.0),
+        Container(height: 20.0),
+        _textField('Username', (val) => setState(() => _un = val), false),
+        Container(height: 20.0),
+        _textField('Password', (val) => setState(() => _pw = val), true),
+        _forgotPassword(context),
+        Container(height: 30.0),
+        WhiteButton(text: "Login", onPressed: () => _submit(context)),
+        _signUp(context),
+        _privacy(context),
+      ],
     );
   }
 
@@ -109,9 +115,7 @@ class _PresenterState extends State<_Presenter> {
       onTap: () {
         showDialog(
           context: context,
-          builder: (context) {
-            return _forgotDialog(context);
-          },
+          builder: (context) => _forgotDialog(context),
         );
       },
       child: Column(

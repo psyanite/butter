@@ -7,14 +7,15 @@ import 'package:flutter_svg/svg.dart';
 
 class BackArrow extends StatelessWidget {
   final Color color;
+  final Function onTap;
 
-  BackArrow({Key key, this.color = Burnt.textBodyColor}) : super(key: key);
+  BackArrow({Key key, this.color = Burnt.textBodyColor, this.onTap}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       icon: Icon(CrustCons.back, color: color, size: 30.0),
-      onPressed: () => Navigator.of(context).pop(),
+      onPressed: () => onTap != null ? onTap(context) : Navigator.of(context).pop(),
     );
   }
 }
@@ -25,18 +26,18 @@ class SmallButton extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final Gradient gradient;
 
-  SmallButton(
-      {Key key,
-      this.child,
-      this.onPressed,
-      this.padding,
-      this.gradient = const LinearGradient(
-        begin: Alignment.bottomLeft,
-        end: Alignment.topRight,
-        stops: [0, 0.6, 1.0],
-        colors: [Color(0xFFFFAB40), Color(0xFFFFAB40), Color(0xFFFFC86B)],
-      )})
-      : super(key: key);
+  SmallButton({
+    Key key,
+    this.child,
+    this.onPressed,
+    this.padding,
+    this.gradient = const LinearGradient(
+      begin: Alignment.bottomLeft,
+      end: Alignment.topRight,
+      stops: [0, 0.6, 1.0],
+      colors: [Color(0xFFFFAB40), Color(0xFFFFAB40), Color(0xFFFFC86B)],
+    ),
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +46,33 @@ class SmallButton extends StatelessWidget {
       child: Container(
         padding: padding,
         decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2.0)), gradient: gradient),
+        child: child,
+      ),
+    );
+  }
+}
+
+class SmallSolidButton extends StatelessWidget {
+  final Widget child;
+  final Function onPressed;
+  final EdgeInsetsGeometry padding;
+  final Color color;
+
+  SmallSolidButton({
+    Key key,
+    this.child,
+    this.onPressed,
+    this.padding,
+    this.color = Burnt.primary,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: onPressed,
+      child: Container(
+        padding: padding,
+        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2.0)), color: color),
         child: child,
       ),
     );

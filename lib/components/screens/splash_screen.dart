@@ -39,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   _redirect(context, route) {
-    return Timer(Duration(milliseconds: 200), () {
+    return Timer(Duration(milliseconds: 500), () {
       Navigator.pushReplacementNamed(context, route);
     });
   }

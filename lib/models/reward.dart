@@ -15,6 +15,7 @@ class Reward {
   final String promoImage;
   final String termsAndConditions;
   final bool hidden;
+  final int redeemLimit;
 
   Reward({
     this.id,
@@ -28,7 +29,22 @@ class Reward {
     this.promoImage,
     this.termsAndConditions,
     this.hidden,
+    this.redeemLimit,
   });
+
+  String typeText() {
+    switch (type) {
+      case RewardType.loyalty:
+        return 'Loyalty Reward';
+
+      case RewardType.one_time:
+        return 'Can only be redeemed once';
+
+      case RewardType.unlimited:
+      default:
+        return 'Can be redeemed as many times as you like';
+    }
+  }
 
   bool isExpired() {
     var today = new DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
@@ -95,6 +111,7 @@ class Reward {
       promoImage: json['promo_image'],
       termsAndConditions: json['terms_and_conditions'],
       hidden: json['hidden'],
+      redeemLimit: json['redeem_limit'],
     );
   }
 
@@ -170,7 +187,8 @@ class Reward {
     promo_image,
     terms_and_conditions,
     hidden,
+    redeem_limit,
   """;
 }
 
-enum RewardType { one_time }
+enum RewardType { one_time, unlimited, loyalty }

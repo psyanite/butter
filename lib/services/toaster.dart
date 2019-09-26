@@ -20,8 +20,24 @@ class Toaster {
     if (response.statusCode != 200 || responseBody['errors'] != null) {
       print('Toaster request failed: {\n${body.trimRight()}\n}');
       print('${response.statusCode} response: ${response.body}');
-      return Map<String, dynamic>();
+      return responseBody;
     }
     return responseBody['data'];
+  }
+
+  static String getError(Map<String, dynamic> response) {
+    var errors = response['errors'];
+    return errors != null ? (errors as List)[0]['message'] : null;
+  }
+
+  static Future<void> logError(String type, String desc) async {
+    String query = """
+      mutation {
+        addSystemError(errorType: "$type", description: "$desc") {
+          id
+        }
+      }
+    """;
+    await get(query);
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:butter/components/honor/scan_reward_screen.dart';
 import 'package:butter/components/my_store/my_qr_screen.dart';
 import 'package:butter/components/my_store/set_picture_screen.dart';
 import 'package:butter/components/my_store/update_store_screen.dart';
@@ -29,6 +30,10 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _Props>(
+      onInit: (Store<AppState> store) {
+        var s = store.state.me.store;
+        if (s != null) store.dispatch(FetchRewards(s.id));
+      },
       converter: (Store<AppState> store) => _Props.fromStore(store),
       builder: (BuildContext context, _Props props) {
         if (props.store == null) return _pleaseWait(props.me);
@@ -206,16 +211,7 @@ class _PresenterState extends State<_Presenter> {
             ),
           ),
         ),
-        SafeArea(
-          child: Container(
-            height: 60.0,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[Container(), Padding(child: _menuButton(), padding: EdgeInsets.only(right: 10.0))],
-            ),
-          ),
-        ),
+        _menuButton(),
       ],
     );
   }
@@ -327,9 +323,16 @@ class _PresenterState extends State<_Presenter> {
   Widget _menuButton() {
     return Builder(
       builder: (context) {
-        return InkWell(
-          onTap: () => Scaffold.of(context).openEndDrawer(),
-          child: Icon(CrustCons.menu_bold, color: Colors.white, size: 30.0),
+        return SafeArea(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[Container(), Padding(child: InkWell(
+              onTap: () => Scaffold.of(context).openEndDrawer(),
+              child: Icon(CrustCons.menu_bold, color: Colors.white, size: 30.0),
+            ), padding: EdgeInsets.only(bottom: 10.0, top: 30.0, left: 25.0, right: 15.0))
+            ],
+          ),
         );
       },
     );
@@ -375,6 +378,13 @@ class _PresenterState extends State<_Presenter> {
             ),
           ),
           ListTile(
+            title: Text('Scan Reward', style: TextStyle(fontSize: 18.0)),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.push(context, MaterialPageRoute(builder: (_) => ScanRewardScreen()));
+            },
+          ),
+          ListTile(
             title: Text('Show Store QR Code', style: TextStyle(fontSize: 18.0)),
             onTap: () {
               Navigator.pop(context);
@@ -406,7 +416,7 @@ class _PresenterState extends State<_Presenter> {
             title: Text('Log out', style: TextStyle(fontSize: 18.0)),
             onTap: () {
               widget.logout();
-              Navigator.popUntil(context, ModalRoute.withName(MainRoutes.login));
+              Navigator.pushReplacementNamed(context, MainRoutes.login);
             },
           ),
         ]),
