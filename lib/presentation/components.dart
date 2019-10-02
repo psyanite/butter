@@ -5,6 +5,37 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+class SolidBackButton extends StatelessWidget {
+  final Color color;
+  final Color textColor;
+
+  SolidBackButton({Key key, this.color = Burnt.primary, this.textColor = Colors.white}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => Navigator.of(context).pop(),
+      child: Container(
+        padding: EdgeInsets.only(left: 7.0, right: 13.0, top: 10.0, bottom: 10.0),
+        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2.0)), color: color),
+        child: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
+          Icon(Icons.arrow_back_ios, color: textColor, size: 20.0),
+          Container(width: 3.0),
+          Text('Go Back', style: TextStyle(color: textColor, fontSize: 22.0))
+        ]),
+      ),
+    );
+  }
+}
+
+
+class WhiteBackButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SolidBackButton(color: Colors.white, textColor: Burnt.primary);
+  }
+}
+
 class BackArrow extends StatelessWidget {
   final Color color;
   final Function onTap;
@@ -22,14 +53,14 @@ class BackArrow extends StatelessWidget {
 
 class SmallButton extends StatelessWidget {
   final Widget child;
-  final Function onPressed;
+  final Function onTap;
   final EdgeInsetsGeometry padding;
   final Gradient gradient;
 
   SmallButton({
     Key key,
     this.child,
-    this.onPressed,
+    this.onTap,
     this.padding,
     this.gradient = const LinearGradient(
       begin: Alignment.bottomLeft,
@@ -42,7 +73,7 @@ class SmallButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: onTap,
       child: Container(
         padding: padding,
         decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2.0)), gradient: gradient),
@@ -54,14 +85,14 @@ class SmallButton extends StatelessWidget {
 
 class SmallSolidButton extends StatelessWidget {
   final Widget child;
-  final Function onPressed;
+  final Function onTap;
   final EdgeInsetsGeometry padding;
   final Color color;
 
   SmallSolidButton({
     Key key,
     this.child,
-    this.onPressed,
+    this.onTap,
     this.padding,
     this.color = Burnt.primary,
   }) : super(key: key);
@@ -69,7 +100,7 @@ class SmallSolidButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: onTap,
       child: Container(
         padding: padding,
         decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2.0)), color: color),
@@ -219,7 +250,7 @@ class SolidButton extends StatelessWidget {
 class HollowButton extends StatelessWidget {
   final Function onTap;
   final List<Widget> children;
-  final double padding;
+  final EdgeInsetsGeometry padding;
   final Color borderColor;
   final Color splashColor;
 
@@ -236,7 +267,7 @@ class HollowButton extends StatelessWidget {
           border: Border.all(color: borderColor ?? Color(0xFFFFD173), width: 1.0, style: BorderStyle.solid),
           borderRadius: BorderRadius.circular(2.0),
         ),
-        padding: EdgeInsets.symmetric(vertical: padding ?? 10.0),
+        padding: padding,
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,

@@ -28,7 +28,7 @@ class PhotoSelector extends StatelessWidget {
         if (images.length == 1) PhotoPreview(images[0]),
         if (images.length > 1) _carousel(),
         SmallButton(
-          onPressed: () => _loadAssets(context),
+          onTap: () => _loadAssets(context),
           padding: EdgeInsets.only(left: 7.0, right: 12.0, top: 10.0, bottom: 10.0),
           child: Row(
             mainAxisSize: MainAxisSize.min,

@@ -2,7 +2,9 @@ import 'dart:async';
 
 import 'package:butter/main.dart';
 import 'package:butter/state/app/app_state.dart';
+import 'package:butter/state/error/error_actions.dart';
 import 'package:butter/state/me/me_actions.dart';
+import 'package:butter/state/me/me_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -25,8 +27,16 @@ class _SplashScreenState extends State<SplashScreen> {
       onInit: (Store<AppState> store) {
         var me = store.state.me.admin;
         if (me != null) {
-          store.dispatch(FetchStoreByAdminId(me.id));
-          _redirect(context, MainRoutes.home);
+          MeService.fetchStoreByAdminId(me.id).then((s) {
+            if (s != null) {
+              store.dispatch(FetchStoreSuccess(s));
+              _redirect(context, MainRoutes.home);
+            } else {
+              _redirect(context, MainRoutes.contact);
+            }
+          }).catchError((e) {
+            store.dispatch(RequestFailure("fetchStoreByAdminId ${e.toString()}"));
+          });
         } else {
           _redirect(context, MainRoutes.login);
         }

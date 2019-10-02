@@ -12,12 +12,6 @@ class LoginSuccess {
 
 class Logout {}
 
-class FetchStoreByAdminId {
-  final int adminId;
-
-  FetchStoreByAdminId(this.adminId);
-}
-
 class FetchRewards {
   final int storeId;
 

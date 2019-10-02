@@ -1,5 +1,5 @@
 import 'package:butter/components/dialog/dialog.dart';
-import 'package:butter/components/honor/scan_reward_screen.dart';
+import 'package:butter/main.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/models/user_reward.dart';
 import 'package:butter/presentation/components.dart';
@@ -20,12 +20,14 @@ class HonorSuccessScreen extends StatelessWidget {
         Flexible(
           child: CustomScrollView(slivers: <Widget>[
             SliverToBoxAdapter(
-              child: Column(children: <Widget>[Container(height: 100.0), Text('Success', style: Burnt.titleStyle.copyWith(fontSize: 36.0)),
-                Container(height: 10.0),
-                Text('Star Awarded Successfully', style: TextStyle(fontSize: 24.0)),
-                Container(height: 30.0),
-                _UserRewardInfo(userReward: userReward),
-              ]))
+                child: Column(children: <Widget>[
+              Container(height: 100.0),
+              Text('Success', style: Burnt.titleStyle.copyWith(fontSize: 36.0)),
+              Container(height: 10.0),
+              Text('Star Awarded Successfully', style: TextStyle(fontSize: 24.0)),
+              Container(height: 30.0),
+              _UserRewardInfo(userReward: userReward),
+            ]))
           ]),
         ),
         _goAgainButton(),
@@ -37,9 +39,10 @@ class HonorSuccessScreen extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.all(16.0),
       child: Builder(builder: (context) {
-        return BurntButton(onPressed: () {
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ScanRewardScreen()));
-        }, text: 'Go Back to Scanner');
+        return BurntButton(
+          onPressed: () => Navigator.popUntil(context, ModalRoute.withName(MainRoutes.home)),
+          text: 'Go Back to Scanner',
+        );
       }),
     );
   }

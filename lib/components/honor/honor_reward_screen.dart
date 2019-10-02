@@ -1,6 +1,6 @@
 import 'package:butter/components/dialog/dialog.dart';
 import 'package:butter/components/honor/honor_success_screen.dart';
-import 'package:butter/components/honor/scan_reward_screen.dart';
+import 'package:butter/main.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/models/user_reward.dart';
 import 'package:butter/presentation/components.dart';
@@ -91,7 +91,7 @@ class _HonorRewardScreenState extends State<HonorRewardScreen> {
     var giveReward = _actionText() == 'Give New Loyalty Card';
     return SmallSolidButton(
       color: giveReward ? Color(0xDD007AFF) : Burnt.primary,
-      onPressed: () => _awardStar(context),
+      onTap: () => _awardStar(context),
       padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 10.0, bottom: 10.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -157,7 +157,7 @@ class _HonorRewardScreenState extends State<HonorRewardScreen> {
   }
 
   _goBack(context) {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ScanRewardScreen()));
+    Navigator.popUntil(context, ModalRoute.withName(MainRoutes.home));
   }
 }
 

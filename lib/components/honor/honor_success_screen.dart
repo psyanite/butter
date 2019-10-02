@@ -1,5 +1,5 @@
 import 'package:butter/components/dialog/dialog.dart';
-import 'package:butter/components/honor/scan_reward_screen.dart';
+import 'package:butter/main.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/models/user_reward.dart';
 import 'package:butter/presentation/components.dart';
@@ -44,10 +44,9 @@ class HonorSuccessScreen extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       child: Builder(builder: (context) {
         return BurntButton(
-            onPressed: () {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ScanRewardScreen()));
-            },
-            text: 'Go Back to Scanner');
+          onPressed: () => Navigator.popUntil(context, ModalRoute.withName(MainRoutes.home)),
+          text: 'Go Back to Scanner',
+        );
       }),
     );
   }

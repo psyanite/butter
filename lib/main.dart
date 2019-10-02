@@ -1,4 +1,5 @@
-import 'package:butter/components/screens/home_screen.dart';
+import 'package:butter/components/common/main_tab_navigator.dart';
+import 'package:butter/components/screens/contact_us_screen.dart';
 import 'package:butter/components/screens/login_screen.dart';
 import 'package:butter/components/screens/splash_screen.dart';
 import 'package:butter/presentation/platform_adaptive.dart';
@@ -44,6 +45,7 @@ main() async {
 class MainRoutes {
   static const String splash = '/';
   static const String login = '/login';
+  static const String contact = '/contact';
   static const String home = '/home';
 }
 
@@ -64,7 +66,8 @@ class Main extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           MainRoutes.splash: (context) => SplashScreen(),
           MainRoutes.login: (context) => LoginScreen(),
-          MainRoutes.home: (context) => HomeScreen(),
+          MainRoutes.contact: (context) => ContactUsScreen(),
+          MainRoutes.home: (context) => MainTabNavigator(),
         },
       ),
     );

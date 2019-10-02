@@ -37,7 +37,7 @@ class MeService {
     return { 'admin': admin, 'store': store };
   }
 
-  Future<Store> fetchStoreByAdminId(int adminId) async {
+  static Future<Store> fetchStoreByAdminId(int adminId) async {
     String query = """
       query {
         findAdminById(id: $adminId) {

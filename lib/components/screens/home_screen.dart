@@ -1,13 +1,8 @@
 import 'dart:async';
 
-import 'package:butter/components/honor/scan_reward_screen.dart';
-import 'package:butter/components/my_store/my_qr_screen.dart';
-import 'package:butter/components/my_store/set_picture_screen.dart';
-import 'package:butter/components/my_store/update_store_screen.dart';
+import 'package:butter/components/common/store_banner.dart';
 import 'package:butter/components/post_list/post_list.dart';
 import 'package:butter/components/rewards/reward_swiper.dart';
-import 'package:butter/components/screens/about_screen.dart';
-import 'package:butter/main.dart';
 import 'package:butter/models/admin.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/models/reward.dart';
@@ -18,7 +13,6 @@ import 'package:butter/presentation/theme.dart';
 import 'package:butter/state/app/app_state.dart';
 import 'package:butter/state/me/me_actions.dart';
 import 'package:butter/state/me/me_service.dart';
-import 'package:butter/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -36,38 +30,12 @@ class HomeScreen extends StatelessWidget {
       },
       converter: (Store<AppState> store) => _Props.fromStore(store),
       builder: (BuildContext context, _Props props) {
-        if (props.store == null) return _pleaseWait(props.me);
         return _Presenter(
           store: props.store,
           rewards: props.rewards,
           logout: props.logout,
         );
       },
-    );
-  }
-
-  Widget _pleaseWait(Admin me) {
-    var email = () => launch(Utils.buildEmail('Register Success', 'Request for complete setup process.\n\nUsername: ${me.username}'));
-    return Scaffold(
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              Text('Thanks for registering.', textAlign: TextAlign.center),
-              Container(height: 5.0),
-              Text('Please contact us to complete the setup process.', textAlign: TextAlign.center),
-              Container(height: 20.0),
-              SmallButton(
-                child: Text('Email Us', style: TextStyle(color: Colors.white)),
-                onPressed: email,
-                padding: EdgeInsets.symmetric(horizontal: 17.0, vertical: 10.0),
-              )
-            ],
-          ),
-        ),
-      ),
     );
   }
 }
@@ -148,7 +116,6 @@ class _PresenterState extends State<_Presenter> {
   Widget build(BuildContext context) {
     if (widget.store == null) return Scaffold(body: LoadingCenter());
     return Scaffold(
-      endDrawer: _drawer(context),
       body: RefreshIndicator(
         onRefresh: () async {
           _refresh();
@@ -175,7 +142,7 @@ class _PresenterState extends State<_Presenter> {
     return SliverToBoxAdapter(
       child: Container(
         child: Column(children: <Widget>[
-          _bannerImage(),
+          StoreBanner(),
           _metaInfo(),
           Container(
             margin: EdgeInsets.symmetric(horizontal: 16.0),
@@ -183,36 +150,6 @@ class _PresenterState extends State<_Presenter> {
           )
         ]),
       ),
-    );
-  }
-
-  Widget _bannerImage() {
-    return Stack(
-      alignment: AlignmentDirectional.bottomCenter,
-      children: <Widget>[
-        Container(
-          height: 300.0,
-          decoration: BoxDecoration(
-            color: Burnt.imgPlaceholderColor,
-            image: DecorationImage(
-              image: NetworkImage(widget.store.coverImage),
-              fit: BoxFit.cover,
-            ),
-          ),
-        ),
-        Container(
-          height: 300.0,
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: [0, 0.8],
-              colors: [Color(0x00000000), Color(0x30000000)],
-            ),
-          ),
-        ),
-        _menuButton(),
-      ],
     );
   }
 
@@ -320,24 +257,6 @@ class _PresenterState extends State<_Presenter> {
     );
   }
 
-  Widget _menuButton() {
-    return Builder(
-      builder: (context) {
-        return SafeArea(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[Container(), Padding(child: InkWell(
-              onTap: () => Scaffold.of(context).openEndDrawer(),
-              child: Icon(CrustCons.menu_bold, color: Colors.white, size: 30.0),
-            ), padding: EdgeInsets.only(bottom: 10.0, top: 30.0, left: 25.0, right: 15.0))
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   Widget _rewards(BuildContext context) {
     return SliverToBoxAdapter(
       child: Container(
@@ -356,70 +275,6 @@ class _PresenterState extends State<_Presenter> {
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _drawer(BuildContext context) {
-    return Drawer(
-      child: Center(
-        child: ListView(padding: EdgeInsets.zero, children: <Widget>[
-          InkWell(
-            onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => SetPictureScreen())),
-            child: Container(
-              width: 300.0,
-              height: 300.0,
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.cover,
-                  image: NetworkImage(widget.store.coverImage),
-                ),
-              ),
-            ),
-          ),
-          ListTile(
-            title: Text('Scan Reward', style: TextStyle(fontSize: 18.0)),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => ScanRewardScreen()));
-            },
-          ),
-          ListTile(
-            title: Text('Show Store QR Code', style: TextStyle(fontSize: 18.0)),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => MyQrScreen(storeId: widget.store.id)));
-            },
-          ),
-          ListTile(
-            title: Text('Update Store Details', style: TextStyle(fontSize: 18.0)),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => UpdateStoreScreen()));
-            },
-          ),
-          ListTile(
-            title: Text('About', style: TextStyle(fontSize: 18.0)),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.push(context, MaterialPageRoute(builder: (_) => AboutScreen()));
-            },
-          ),
-          ListTile(
-            title: Text('Contact Us', style: TextStyle(fontSize: 18.0)),
-            onTap: () {
-              launch(Utils.buildEmail('', ''));
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            title: Text('Log out', style: TextStyle(fontSize: 18.0)),
-            onTap: () {
-              widget.logout();
-              Navigator.pushReplacementNamed(context, MainRoutes.login);
-            },
-          ),
-        ]),
       ),
     );
   }

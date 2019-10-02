@@ -1,5 +1,6 @@
 import 'package:barcode_scan/barcode_scan.dart';
 import 'package:butter/components/honor/honor_reward_screen.dart';
+import 'package:butter/main.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/models/user_reward.dart';
 import 'package:butter/presentation/components.dart';
@@ -35,12 +36,6 @@ class _Presenter extends StatefulWidget {
 
 class _PresenterState extends State<_Presenter> {
   String _error;
-
-  @override
-  initState() {
-    super.initState();
-    _load();
-  }
 
   _load() async {
     var code = await _scan();
@@ -93,8 +88,7 @@ class _PresenterState extends State<_Presenter> {
         _setErrorCode('4011');
       }
     } on FormatException {
-      // Back button is pressed
-      Navigator.pop(context);
+      // Back button pressed, do nothing.
     } catch (e) {
       _setErrorCode('4010');
     }
@@ -102,7 +96,7 @@ class _PresenterState extends State<_Presenter> {
   }
 
   _redirect(Widget screen) {
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => screen));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => screen));
   }
 
   _setError(String msg) {
@@ -110,7 +104,7 @@ class _PresenterState extends State<_Presenter> {
   }
 
   _setErrorCode(String code) {
-    this.setState(() => _error = 'Sorry, we couldn\'t recognise this QR code, error $code occurred.');
+    this.setState(() => _error = 'Sorry, we couldn\'t recognise this QR code, error $code occurred, please try again.');
   }
 
   _retry() {
@@ -129,7 +123,27 @@ class _PresenterState extends State<_Presenter> {
 
   Widget _content() {
     if (_error != null) return _errorMessage();
-    return CircularProgressIndicator();
+    return _openCameraButton();
+  }
+
+  Widget _openCameraButton() {
+    return SmallSolidButton(
+      onTap: _load,
+      padding: EdgeInsets.symmetric(horizontal: 17.0, vertical: 15.0),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(Icons.camera_alt, color: Colors.white, size: 50.0),
+            Container(height: 5.0),
+            Text('Scan Reward', style: TextStyle(fontSize: 22.0, color: Colors.white)),
+          ],
+        )],
+      ),
+    );
   }
 
   Widget _errorMessage() {
@@ -165,7 +179,7 @@ class _InvalidRewardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var boldStyle = TextStyle(fontSize: 30.0, fontWeight: Burnt.fontBold);
     var lightStyle = TextStyle(fontSize: 30.0);
-    var goAgain = () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ScanRewardScreen()));
+    var goAgain = () => Navigator.popUntil(context, ModalRoute.withName(MainRoutes.home));
     return Scaffold(
       body: Center(
         child: Padding(
@@ -200,7 +214,7 @@ class _AlreadyRedeemedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var boldStyle = TextStyle(fontSize: 30.0, fontWeight: Burnt.fontBold);
     var lightStyle = TextStyle(fontSize: 30.0);
-    var goAgain = () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => ScanRewardScreen()));
+    var goAgain = () => Navigator.popUntil(context, ModalRoute.withName(MainRoutes.home));
     return Scaffold(
       body: Center(
         child: Padding(
@@ -230,7 +244,7 @@ class _GoAgainButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SmallSolidButton(
-      onPressed: onTap,
+      onTap: onTap,
       padding: EdgeInsets.only(left: 12.0, right: 12.0, top: 10.0, bottom: 10.0),
       child: Row(
         mainAxisSize: MainAxisSize.min,

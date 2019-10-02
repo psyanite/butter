@@ -16,14 +16,7 @@ class RewardScreen extends StatelessWidget {
     if (reward == null) return Scaffold(body: LoadingCenter());
     return Scaffold(
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            Column(children: <Widget>[_appBar(), _description()]),
-            _footer(),
-          ],
-        ),
+        child: Column(children: <Widget>[_appBar(), _description()]),
       ),
     );
   }
@@ -217,16 +210,5 @@ class RewardScreen extends StatelessWidget {
         ),
       );
     });
-  }
-
-  Widget _footer() {
-    return _renderFooterText('You\'ve already redeemed this reward!');
-  }
-
-  Widget _renderFooterText(text) {
-    return Padding(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 40.0),
-      child: Center(child: Text(text)),
-    );
   }
 }

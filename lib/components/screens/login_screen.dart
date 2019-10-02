@@ -178,6 +178,6 @@ class _PresenterState extends State<_Presenter> {
     }
 
     widget.loginSuccess(admin, store);
-    Navigator.pushReplacementNamed(context, MainRoutes.home);
+    Navigator.pushReplacementNamed(context, MainRoutes.splash);
   }
 }
