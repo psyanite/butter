@@ -33,7 +33,7 @@ class MyQrScreen extends StatelessWidget {
                   version: 2,
                 ),
                 Container(height: 10.0),
-                Text('Ask your friend to scan your secret code.', style: TextStyle(color: Colors.white, fontSize: 24.0)),
+                Text('Here is the store QR code.', style: TextStyle(color: Colors.white, fontSize: 24.0)),
                 Container(height: 30.0),
                 WhiteBackButton(),
               ],

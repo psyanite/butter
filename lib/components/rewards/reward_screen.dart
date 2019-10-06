@@ -3,8 +3,10 @@ import 'package:butter/components/rewards/reward_locations_screen.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/presentation/components.dart';
 import 'package:butter/presentation/theme.dart';
+import 'package:butter/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class RewardScreen extends StatelessWidget {
   final Reward reward;
@@ -15,9 +17,12 @@ class RewardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     if (reward == null) return Scaffold(body: LoadingCenter());
     return Scaffold(
-      body: Center(
-        child: Column(children: <Widget>[_appBar(), _description()]),
-      ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverToBoxAdapter(child: _appBar()),
+          SliverToBoxAdapter(child: _description()),
+        ],
+      )
     );
   }
 
@@ -83,6 +88,8 @@ class RewardScreen extends StatelessWidget {
           Text(reward.description),
           Container(height: 10.0),
           _termsAndConditions(),
+          Container(height: 20.0),
+          _qrCode(),
         ],
       ),
     );
@@ -210,5 +217,24 @@ class RewardScreen extends StatelessWidget {
         ),
       );
     });
+  }
+
+  Widget _qrCode() {
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 30.0),
+      decoration: BoxDecoration(border: Border(top: BorderSide(color: Burnt.separator))),
+      child: Column(
+        children: <Widget>[
+          Center(
+            child: QrImage(
+              data: Utils.buildRewardQrCode(reward.code),
+              size: 300.0,
+              foregroundColor: Burnt.textBodyColor,
+              version: 2,
+            ),
+          )
+        ],
+      ),
+    );
   }
 }

@@ -28,7 +28,6 @@ class SolidBackButton extends StatelessWidget {
   }
 }
 
-
 class WhiteBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

@@ -15,6 +15,7 @@ class Reward {
   final String promoImage;
   final String termsAndConditions;
   final bool hidden;
+  final String code;
   final int redeemLimit;
 
   Reward({
@@ -29,6 +30,7 @@ class Reward {
     this.promoImage,
     this.termsAndConditions,
     this.hidden,
+    this.code,
     this.redeemLimit,
   });
 
@@ -111,6 +113,7 @@ class Reward {
       promoImage: json['promo_image'],
       termsAndConditions: json['terms_and_conditions'],
       hidden: json['hidden'],
+      code: json['code'],
       redeemLimit: json['redeem_limit'],
     );
   }
@@ -187,6 +190,7 @@ class Reward {
     promo_image,
     terms_and_conditions,
     hidden,
+    code,
     redeem_limit,
   """;
 }
