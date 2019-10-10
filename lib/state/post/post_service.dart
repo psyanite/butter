@@ -32,18 +32,12 @@ class PostService {
   }
 
   static Future<Post> updateReviewPost(Post post) async {
-    var body = post.postReview.body != null && post.postReview.body.isNotEmpty ? '"${post.postReview.body}"' : null;
+    var body = post.postReview.body != null && post.postReview.body.isNotEmpty ? '"""${post.postReview.body}"""' : null;
     String query = """
       mutation {
-        updatePost(
+        updateAdminPost(
           id: ${post.id},
-          hidden: ${post.hidden},
-          body: \"\"$body\"\",
-          overallScore: ${EnumUtil.format(post.postReview.overallScore.toString())},
-          tasteScore: ${EnumUtil.format(post.postReview.tasteScore.toString())},
-          serviceScore: ${EnumUtil.format(post.postReview.serviceScore.toString())},
-          valueScore: ${EnumUtil.format(post.postReview.valueScore.toString())},
-          ambienceScore: ${EnumUtil.format(post.postReview.ambienceScore.toString())},
+          body: $body,
           photos: [${post.postPhotos.map((p) => '"${p.url}"').join(", ")}],
         ) {
           ${Post.attributes}
@@ -51,32 +45,26 @@ class PostService {
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['updatePost'];
+    var json = response['updateAdminPost'];
     return Post.fromToaster(json);
   }
 
-  static Future<Post> submitReviewPost(Post post) async {
-    var body = post.postReview.body != null && post.postReview.body.isNotEmpty ? '"${post.postReview.body}"' : null;
+  static Future<Post> submitPost(Post post) async {
+    var body = post.postReview.body != null && post.postReview.body.isNotEmpty ? '"""${post.postReview.body}"""' : null;
     String query = """
       mutation {
-        addReviewPost(
-          hidden: ${post.hidden},
+        addAdminPost(
           storeId: ${post.store.id},
-          body: \"\"$body\"\",
-          overallScore: ${EnumUtil.format(post.postReview.overallScore.toString())},
-          tasteScore: ${EnumUtil.format(post.postReview.tasteScore.toString())},
-          serviceScore: ${EnumUtil.format(post.postReview.serviceScore.toString())},
-          valueScore: ${EnumUtil.format(post.postReview.valueScore.toString())},
-          ambienceScore: ${EnumUtil.format(post.postReview.ambienceScore.toString())},
+          body: $body,
           photos: [${post.postPhotos.map((p) => '"${p.url}"').join(", ")}],
-          postedBy: ${post.postedBy.id}
+          postedByAdmin: ${post.postedByAdmin.id}
         ) {
           ${Post.attributes}
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['addReviewPost'];
+    var json = response['addAdminPost'];
     return Post.fromToaster(json);
   }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:butter/components/common/store_banner.dart';
+import 'package:butter/components/new_post/review_form.dart';
 import 'package:butter/components/post_list/post_list.dart';
 import 'package:butter/components/rewards/reward_swiper.dart';
 import 'package:butter/models/admin.dart';
@@ -125,6 +126,7 @@ class _PresenterState extends State<_Presenter> {
           slivers: <Widget>[
             _appBar(),
             if (widget.rewards.isNotEmpty) _rewards(context),
+            _newPostButton(context),
             PostList(
               noPostsView: Text('Looks like ${widget.store.name} doesn\'t have any reviews yet.'),
               postListType: PostListType.forStore,
@@ -252,6 +254,24 @@ class _PresenterState extends State<_Presenter> {
             if (first.isNotEmpty) Text(first, style: TextStyle(color: Burnt.hintTextColor)),
             if (second.isNotEmpty) Text(second, style: TextStyle(color: Burnt.hintTextColor)),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget _newPostButton(BuildContext context) {
+    return SliverToBoxAdapter(
+      child: Container(
+        padding: EdgeInsets.only(top: 33.0, bottom: 15.0, left: 16.0, right: 16.0),
+        child: BurntButton(
+          icon: CrustCons.new_post,
+          iconSize: 25.0,
+          text: 'New Post',
+          padding: 15.0,
+          fontSize: 20.0,
+          onPressed: () {
+            Navigator.push(context, MaterialPageRoute(builder: (_) => ReviewForm()));
+          },
         ),
       ),
     );

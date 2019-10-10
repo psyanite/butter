@@ -1,3 +1,4 @@
+import 'package:butter/models/admin.dart';
 import 'package:butter/models/store.dart';
 import 'package:butter/models/user.dart';
 import 'package:butter/utils/enum_util.dart';
@@ -8,13 +9,14 @@ class Post {
   final bool hidden;
   final Store store;
   final User postedBy;
+  final Admin postedByAdmin;
   final DateTime postedAt;
   final List<PostPhoto> postPhotos;
   final PostReview postReview;
   final int likeCount;
   final int commentCount;
 
-  Post({this.id, this.type, this.hidden, this.store, this.postedBy, this.postedAt, this.postPhotos, this.postReview, this.likeCount, this.commentCount});
+  Post({this.id, this.type, this.hidden, this.store, this.postedBy, this.postedByAdmin, this.postedAt, this.postPhotos, this.postReview, this.likeCount, this.commentCount});
 
   Post copyWith({List<PostPhoto> postPhotos}) {
     return Post(
@@ -23,6 +25,7 @@ class Post {
       hidden: this.hidden,
       store: this.store,
       postedBy: this.postedBy,
+      postedByAdmin: this.postedByAdmin,
       postedAt: this.postedAt,
       postPhotos: postPhotos ?? this.postPhotos,
       postReview: this.postReview,

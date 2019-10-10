@@ -61,7 +61,7 @@ class PhotoSelector extends StatelessWidget {
             lightStatusBar: false,
             statusBarColor: '#FFAB40',
             allViewTitle: 'All',
-            selectCircleStrokeColor: '#FFAB40',
+            selectCircleStrokeColor: '#FFFFFF',
             selectionLimitReachedText: 'Sorry, maximum number of photos reached',
             textOnNothingSelected: 'Oops! Select an image',
           ));
