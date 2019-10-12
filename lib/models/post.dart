@@ -44,6 +44,7 @@ class Post {
         hidden: post['hidden'],
         store: Store.fromToaster(post['store']),
         postedBy: User.fromProfileToaster(post['posted_by']),
+        postedByAdmin: Admin.fromToaster(post['posted_by_admin']),
         postedAt: DateTime.parse(post['posted_at']),
         postPhotos: (postPhotos as List).map<PostPhoto>((postPhoto) {
           return PostPhoto(id: postPhoto['id'], url: postPhoto['url']);
@@ -87,6 +88,10 @@ class Post {
       username,
       preferred_name,
       profile_picture,
+    },
+    posted_by_admin {
+      id,
+      username,
     },
     posted_at,
     post_photos {

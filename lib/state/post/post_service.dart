@@ -21,13 +21,13 @@ class PostService {
   static Future<bool> deletePost(int postId, int myId) async {
     String query = """
       mutation {
-        deletePost(postId: $postId, myId: $myId) {
+        deleteAdminPost(postId: $postId, myId: $myId) {
           id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['deletePost'];
+    var json = response['deleteAdminPost'];
     return json['id'] == postId;
   }
 

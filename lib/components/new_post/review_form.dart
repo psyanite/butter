@@ -15,7 +15,6 @@ import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:redux/redux.dart';
 
 class ReviewForm extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _Props>(
@@ -55,8 +54,8 @@ class _PresenterState extends State<_Presenter> {
       fit: StackFit.expand,
       children: <Widget>[
         Scaffold(
-          body: ListView(
-            children: <Widget>[
+          body: CustomScrollView(
+            slivers: <Widget>[
               _appBar(),
               _content(),
             ],
@@ -68,21 +67,25 @@ class _PresenterState extends State<_Presenter> {
   }
 
   Widget _appBar() {
-    return Container(
-      padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0, bottom: 20.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return SliverSafeArea(
+      sliver: SliverToBoxAdapter(
+        child: Container(
+          padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0, bottom: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('NEW POST', style: Burnt.appBarTitleStyle),
-              Container(height: 50, width: 50),
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('NEW POST', style: Burnt.appBarTitleStyle),
+                  Container(height: 50, width: 50),
+                ],
+              ),
             ],
           ),
-        ],
+        ),
       ),
     );
   }
@@ -95,21 +98,25 @@ class _PresenterState extends State<_Presenter> {
       });
       _loadImages(photos);
     };
+
     return Builder(builder: (context) {
-      return Column(
-        children: <Widget>[
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(children: <Widget>[
-              Padding(
-                padding: EdgeInsets.only(top: 20.0, bottom: 30.0),
-                child: PhotoSelector(images: _imageData, onSelectImages: onSelectImages),
-              ),
-              _body(),
-            ]),
-          ),
-          _buttons(context),
-        ],
+      return SliverToBoxAdapter(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: Column(children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(top: 20.0, bottom: 30.0),
+                  child: PhotoSelector(images: _imageData, onSelectImages: onSelectImages),
+                ),
+                _body(),
+              ]),
+            ),
+            _buttons(context),
+          ],
+        ),
       );
     });
   }

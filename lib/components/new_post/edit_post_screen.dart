@@ -1,8 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:butter/components/dialog/dialog.dart';
-import 'package:butter/components/photo/photo_selector.dart';
 import 'package:butter/components/new_post/upload_overlay.dart';
+import 'package:butter/components/photo/photo_selector.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/models/store.dart' as MyStore;
 import 'package:butter/presentation/components.dart';
@@ -24,20 +23,14 @@ class EditPostScreen extends StatefulWidget {
 
 class _PresenterState extends State<EditPostScreen> {
   final Post currentPost;
-  MyStore.Store store;
-  Post post;
-  Score overallScore;
-  Score tasteScore;
-  Score serviceScore;
-  Score valueScore;
-  Score ambienceScore;
-  bool makeSecret;
-  List<PostPhoto> currentPhotos;
-  List<Asset> images = List<Asset>();
-  List<Uint8List> imageData = List<Uint8List>();
-  List<PostPhoto> deletePhotosQueue = List<PostPhoto>();
-  bool showUploadOverlay = false;
-  TextEditingController bodyCtrl = TextEditingController();
+  MyStore.Store _store;
+  Post _post;
+  List<PostPhoto> _currentPhotos;
+  List<Asset> _images = List<Asset>();
+  List<Uint8List> _imageData = List<Uint8List>();
+  List<PostPhoto> _deletePhotosQueue = List<PostPhoto>();
+  bool _showUploadOverlay = false;
+  TextEditingController _bodyCtrl = TextEditingController();
 
   _PresenterState({this.currentPost});
 
@@ -45,20 +38,14 @@ class _PresenterState extends State<EditPostScreen> {
   initState() {
     super.initState();
     var review = currentPost.postReview;
-    store = currentPost.store;
-    overallScore = review.overallScore;
-    tasteScore = review.tasteScore;
-    serviceScore = review.serviceScore;
-    valueScore = review.valueScore;
-    ambienceScore = review.ambienceScore;
-    makeSecret = currentPost.hidden;
-    currentPhotos = [...currentPost.postPhotos];
-    if (review.body != null) bodyCtrl = TextEditingController.fromValue(TextEditingValue(text: review.body));
+    _store = currentPost.store;
+    _currentPhotos = [...currentPost.postPhotos];
+    if (review.body != null) _bodyCtrl = TextEditingController.fromValue(TextEditingValue(text: review.body));
   }
 
   @override
   dispose() {
-    bodyCtrl.dispose();
+    _bodyCtrl.dispose();
     super.dispose();
   }
 
@@ -69,107 +56,61 @@ class _PresenterState extends State<EditPostScreen> {
       children: <Widget>[
         Scaffold(
           body: Builder(
-            builder: (context) => CustomScrollView(
-                  slivers: <Widget>[
-                    _appBar(context),
-                    _questions(),
-                    if (currentPhotos.isNotEmpty) CurrentPhotos(photos: currentPhotos, onPhotoDelete: removePhoto),
-                    _photoSelector(context),
-                    _reviewBody(context),
-                    _secretSwitch(context),
-                    _buttons(context),
-                  ],
-                ),
+            builder: (context) {
+              return CustomScrollView(
+                slivers: <Widget>[
+                  _appBar(context),
+                  if (_currentPhotos.isNotEmpty) CurrentPhotos(photos: _currentPhotos, onPhotoDelete: removePhoto),
+                  _photoSelector(context),
+                  _reviewBody(context),
+                  _buttons(context),
+                ],
+              );
+            },
           ),
         ),
-        if (showUploadOverlay)
-          UploadOverlay(post: post, images: images, deletePhotosQueue: deletePhotosQueue),
+        if (_showUploadOverlay) UploadOverlay(post: _post, images: _images, deletePhotosQueue: _deletePhotosQueue),
       ],
     );
   }
 
   Widget _appBar(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-        padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0, bottom: 20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Text('EDIT REVIEW', style: Burnt.appBarTitleStyle),
-                Container(height: 50, width: 50),
-              ],
-            ),
-            Text('for', style: TextStyle(fontSize: 20.0)),
-            Container(height: 15.0),
-            Row(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Container(
-                    width: 60.0,
-                    height: 50.0,
-                    decoration: BoxDecoration(
-                      color: Burnt.imgPlaceholderColor,
-                      image: DecorationImage(
-                        image: NetworkImage(store.coverImage),
-                        fit: BoxFit.cover,
-                      ),
-                    )),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(store.name, style: TextStyle(fontSize: 18.0, fontWeight: Burnt.fontBold)),
-                      Text(store.location != null ? store.location : store.suburb, style: TextStyle(fontSize: 14.0)),
-                      Text(store.cuisines.join(', '), style: TextStyle(fontSize: 14.0)),
-                    ],
-                  ),
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _questions() {
-    return SliverToBoxAdapter(
-      child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+    return SliverSafeArea(
+      sliver: SliverToBoxAdapter(
         child: Container(
-          height: 555.0,
-          child: Column(children: <Widget>[
-            _overallQuestion(),
-            _tasteQuestion(),
-            _serviceQuestion(),
-            _valueQuestion(),
-            _ambienceQuestion(),
-          ]),
+          padding: EdgeInsets.only(left: 16.0, right: 16.0, top: 40.0, bottom: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Text('EDIT REVIEW', style: Burnt.appBarTitleStyle),
+                  Container(height: 50, width: 50),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget _photoSelector(BuildContext context) {
-    var addPhotosButtonText = currentPhotos.isEmpty ? 'Add Photos' : 'Add More Photos';
+    var addPhotosButtonText = _currentPhotos.isEmpty ? 'Add Photos' : 'Add More Photos';
     Function(List<Asset>) onSelectImages = (photos) {
       setState(() {
-        images = photos;
-        imageData = List.generate(photos.length, (i) => null, growable: false);
+        _images = photos;
+        _imageData = List.generate(photos.length, (i) => null, growable: false);
       });
       _loadImages(photos);
     };
     return SliverPadding(
       padding: EdgeInsets.only(top: 20.0, right: 16.0, bottom: 30.0, left: 16.0),
       sliver: SliverToBoxAdapter(
-        child: PhotoSelector(images: imageData, onSelectImages: onSelectImages, addText: addPhotosButtonText),
+        child: PhotoSelector(images: _imageData, onSelectImages: onSelectImages, addText: addPhotosButtonText),
       ),
     );
   }
@@ -184,7 +125,7 @@ class _PresenterState extends State<EditPostScreen> {
             Container(
               width: 300.0,
               child: TextField(
-                controller: bodyCtrl,
+                controller: _bodyCtrl,
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 decoration: InputDecoration(
@@ -202,146 +143,12 @@ class _PresenterState extends State<EditPostScreen> {
     );
   }
 
-  Widget _secretSwitch(BuildContext context) {
-    return SliverToBoxAdapter(
-      child: Container(
-          padding: EdgeInsets.only(bottom: 30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Text(makeSecret ? 'Keep Secret' : 'Make Public'),
-                  IconButton(icon: Icon(Icons.help_outline, color: Burnt.lightGrey), onPressed: () => _showSecretDialog(context)),
-                  CupertinoSwitch(
-                    value: !makeSecret,
-                    activeColor: Color(0xFF64D2FF),
-                    onChanged: (bool value) {
-                      setState(() => makeSecret = !value);
-                    },
-                  )
-                ],
-              ),
-            ],
-          )),
-    );
-  }
-
-  _showSecretDialog(BuildContext context) {
-    var options = <DialogOption>[DialogOption(display: 'OK', onTap: () => Navigator.of(context, rootNavigator: true).pop(true))];
-    showDialog(
-      context: context,
-      builder: (context) {
-        return BurntDialog(
-          options: options,
-          description:
-              'Posting publically will allow anyone on Burntoast to see your review on the store page and your profile page.\n\nPosting secretly will only allow you to see your own review on your own profile page.',
-        );
-      },
-    );
-  }
-
-  Widget _toastQuestion(String question, Function onTap, Score currentScore) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Text(question, style: TextStyle(fontSize: 18.0)),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              _toastButton(Score.bad, onTap, currentScore == Score.bad),
-              _toastButton(Score.okay, onTap, currentScore == Score.okay),
-              _toastButton(Score.good, onTap, currentScore == Score.good),
-            ],
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _overallQuestion() {
-    Function onTap = (Score score) {
-      setState(() {
-        overallScore = score;
-      });
-    };
-    return _toastQuestion('How was it overall?', onTap, overallScore);
-  }
-
-  Widget _tasteQuestion() {
-    Function onTap = (Score score) {
-      setState(() {
-        tasteScore = score;
-      });
-    };
-    return _toastQuestion('Was it delicious?', onTap, tasteScore);
-  }
-
-  Widget _serviceQuestion() {
-    Function onTap = (Score score) {
-      setState(() {
-        serviceScore = score;
-      });
-    };
-    return _toastQuestion('How was the service?', onTap, serviceScore);
-  }
-
-  Widget _valueQuestion() {
-    Function onTap = (Score score) {
-      setState(() {
-        valueScore = score;
-      });
-    };
-    return _toastQuestion('Was it good value?', onTap, valueScore);
-  }
-
-  Widget _ambienceQuestion() {
-    Function onTap = (Score score) {
-      setState(() {
-        ambienceScore = score;
-      });
-    };
-    return _toastQuestion('How was the ambience?', onTap, ambienceScore);
-  }
-
-  Widget _toastButton(Score score, Function onTap, bool isSelected) {
-    var opacity = isSelected ? 1.0 : 0.6;
-    return InkWell(
-        onTap: () => onTap(score),
-        child: Container(key: UniqueKey(), padding: EdgeInsets.all(10.0), child: ScoreIcon(opacity: opacity, score: score, size: 50.0)),
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent);
-  }
-
   bool _isValid(BuildContext context) {
-    if (overallScore == null) {
-      snack(context, "Select a toast for how it was overall");
-      return false;
-    }
-    if (tasteScore == null) {
-      snack(context, "Select a toast for whether it was delicious");
-      return false;
-    }
-    if (serviceScore == null) {
-      snack(context, "Select a toast for how the service was");
-      return false;
-    }
-    if (valueScore == null) {
-      snack(context, "Select a toast for whether it was good value");
-      return false;
-    }
-    if (ambienceScore == null) {
-      snack(context, "Select a toast for how the ambience was");
-      return false;
-    }
-    if ((bodyCtrl.text == null || bodyCtrl.text.isEmpty) && images.isEmpty && currentPhotos.isEmpty) {
+    if ((_bodyCtrl.text == null || _bodyCtrl.text.isEmpty) && _images.isEmpty) {
       snack(context, "Add some photos or add some thoughts");
       return false;
     }
-    if (images.isNotEmpty) {
+    if (_images.isNotEmpty) {
       var validatePhotos = _validatePhotos();
       if (validatePhotos != null) {
         snack(context, validatePhotos);
@@ -353,14 +160,14 @@ class _PresenterState extends State<EditPostScreen> {
 
   String _validatePhotos() {
     var isValid = true;
-    images.forEach((a) {
+    _images.forEach((a) {
       if (a.originalHeight > 5000 || a.originalWidth > 5000) {
         isValid = false;
         return;
       }
     });
     if (!isValid) {
-      if (images.length == 1) {
+      if (_images.length == 1) {
         return "Oops! The photo is larger than 5000x5000";
       } else {
         return "Oops! One of the photos is larger than 5000x5000";
@@ -375,22 +182,16 @@ class _PresenterState extends State<EditPostScreen> {
     var newPost = Post(
       id: currentPost.id,
       type: PostType.review,
-      hidden: makeSecret,
-      store: store,
+      store: _store,
       postPhotos: [],
       postReview: PostReview(
-        body: bodyCtrl.text,
-        overallScore: overallScore,
-        tasteScore: tasteScore,
-        serviceScore: serviceScore,
-        valueScore: valueScore,
-        ambienceScore: ambienceScore,
+        body: _bodyCtrl.text,
       ),
     );
 
     setState(() {
-      post = newPost;
-      showUploadOverlay = true;
+      _post = newPost;
+      _showUploadOverlay = true;
     });
   }
 
@@ -448,16 +249,16 @@ class _PresenterState extends State<EditPostScreen> {
   }
 
   removePhoto(PostPhoto photo) {
-    currentPhotos.removeWhere((p) => p.id == photo.id);
-    deletePhotosQueue.add(photo);
+    _currentPhotos.removeWhere((p) => p.id == photo.id);
+    _deletePhotosQueue.add(photo);
   }
 
   _loadImages(List<Asset> photos) async {
-    images.asMap().forEach((i, image) async {
+    _images.asMap().forEach((i, image) async {
       var byteData = await image.getByteData(quality: 80);
-      imageData[i] = byteData.buffer.asUint8List();
+      _imageData[i] = byteData.buffer.asUint8List();
       setState(() {
-        imageData = imageData;
+        _imageData = _imageData;
       });
     });
   }
