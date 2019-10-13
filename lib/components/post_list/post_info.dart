@@ -53,7 +53,7 @@ class PostInfo extends StatelessWidget {
         _teaserImage(post.store.coverImage),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[_name('${post.store.name} ⭐'), _postedAt()],
+          children: <Widget>[_name(post.store.getStoreName()), _postedAt()],
         ),
       ],
     );

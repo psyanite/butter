@@ -21,104 +21,104 @@ class CommentService {
   static Future<Comment> addComment(Comment comment) async {
     String query = """
       mutation {
-        addComment(postId: ${comment.postId}, body: "${comment.body}", commentedBy: ${comment.commentedBy.id}) {
+        addStoreComment(postId: ${comment.postId}, body: "${comment.body}", storeId: ${comment.commentedByStore.id}) {
           ${Comment.attributes}
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['addComment'];
+    var json = response['addStoreComment'];
     return Comment.fromToaster(json);
   }
 
-  static Future<bool> deleteComment({ userId, comment }) async {
+  static Future<bool> deleteComment({ storeId, comment }) async {
     String query = """
       mutation {
-        deleteComment(myId: $userId, commentId: ${comment.id}) {
+        deleteStoreComment(storeId: $storeId, commentId: ${comment.id}) {
           id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['deleteComment'];
+    var json = response['deleteStoreComment'];
     return json['id'] == comment.id;
   }
 
   static Future<Reply> addReply(Reply reply) async {
     String query = """
       mutation {
-        addReply(commentId: ${reply.commentId}, body: "${reply.body}", repliedBy: ${reply.repliedBy.id}) {
+        addStoreReply(commentId: ${reply.commentId}, body: "${reply.body}", storeId: ${reply.repliedByStore.id}) {
           ${Reply.attributes}
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['addReply'];
+    var json = response['addStoreReply'];
     return Reply.fromToaster(json);
   }
 
-  static Future<bool> deleteReply({ userId, reply }) async {
+  static Future<bool> deleteReply({ storeId, reply }) async {
     String query = """
       mutation {
-        deleteReply(myId: $userId, replyId: ${reply.id}) {
+        deleteStoreReply(storeId: $storeId, replyId: ${reply.id}) {
           id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['deleteReply'];
+    var json = response['deleteStoreReply'];
     return json['id'] == reply.id;
   }
 
-  Future<bool> favoriteComment({ userId, commentId }) async {
+  Future<bool> favoriteComment({ storeId, commentId }) async {
     String query = """
       mutation {
-        favoriteComment(myId: $userId, commentId: $commentId) {
+        favoriteCommentAsStore(storeId: $storeId, commentId: $commentId) {
           comment_id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['favoriteComment'];
+    var json = response['favoriteCommentAsStore'];
     return json['comment_id'] == commentId;
   }
 
-  Future<bool> unfavoriteComment({ userId, commentId }) async {
+  Future<bool> unfavoriteComment({ storeId, commentId }) async {
     String query = """
       mutation {
-        unfavoriteComment(myId: $userId, commentId: $commentId) {
+        unfavoriteCommentAsStore(storeId: $storeId, commentId: $commentId) {
           comment_id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['unfavoriteComment'];
+    var json = response['unfavoriteCommentAsStore'];
     return json['comment_id'] == commentId;
   }
 
-  Future<bool> favoriteReply({ userId, replyId }) async {
+  Future<bool> favoriteReply({ storeId, replyId }) async {
     String query = """
       mutation {
-        favoriteReply(myId: $userId, replyId: $replyId) {
+        favoriteReplyAsStore(storeId: $storeId, replyId: $replyId) {
           reply_id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['favoriteReply'];
+    var json = response['favoriteReplyAsStore'];
     return json['reply_id'] == replyId;
   }
 
-  Future<bool> unfavoriteReply({ userId, replyId }) async {
+  Future<bool> unfavoriteReply({ storeId, replyId }) async {
     String query = """
       mutation {
-        unfavoriteReply(myId: $userId, replyId: $replyId) {
+        unfavoriteReplyAsStore(storeId: $storeId, replyId: $replyId) {
           reply_id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['unfavoriteReply'];
+    var json = response['unfavoriteReplyAsStore'];
     return json['reply_id'] == replyId;
   }
 }

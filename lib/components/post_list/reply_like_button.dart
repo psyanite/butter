@@ -40,7 +40,7 @@ class _ReplyLikeButtonState extends State<ReplyLikeButton> with TickerProviderSt
     return StoreConnector<AppState, dynamic>(
       converter: (Store<AppState> store) => _Props.fromStore(store, widget.postId, widget.reply),
       builder: (context, props) {
-        var isFavorited = widget.reply.likedBy.contains(props.myId);
+        var isFavorited = widget.reply.likedByStores.contains(props.myStoreId);
         var onFavorite = () => props.favoriteReply(widget.postId, widget.reply);
         var onUnfavorite = () => props.unfavoriteReply(widget.postId, widget.reply);
         var onTap = () {
@@ -52,7 +52,7 @@ class _ReplyLikeButtonState extends State<ReplyLikeButton> with TickerProviderSt
           isFavorited: isFavorited,
           size: 22.0,
           padding: 2.0 - paddingCtrl.value,
-          count: widget.reply.likedBy.length,
+          count: widget.reply.likedByUsers.length + widget.reply.likedByStores.length,
         );
       },
     );
@@ -94,16 +94,19 @@ class _Presenter extends StatelessWidget {
 }
 
 class _Props {
+  final int myStoreId;
   final Function favoriteReply;
   final Function unfavoriteReply;
 
   _Props({
+    this.myStoreId,
     this.favoriteReply,
     this.unfavoriteReply,
   });
 
   static fromStore(Store<AppState> store, int postId, Reply reply) {
     return _Props(
+      myStoreId: store.state.me.store.id,
       favoriteReply: (postId, reply) => store.dispatch(FavoriteReply(postId, reply)),
       unfavoriteReply: (postId, reply) => store.dispatch(UnfavoriteReply(postId, reply)),
     );

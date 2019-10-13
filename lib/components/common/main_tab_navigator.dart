@@ -28,7 +28,6 @@ class MainTabNavigatorState extends State<MainTabNavigator> {
     _tabs = {
       TabType.home: Tab(widget: HomeScreen(), icon: CrustCons.bread_heart),
       TabType.scanReward: Tab(widget: ScanRewardScreen(), icon: CrustCons.qr),
-//      TabType.newPost: Tab(widget: SelectStoreScreen(), icon: CrustCons.new_post),
       TabType.settings: Tab(widget: SettingsScreen(), icon: CrustCons.person)
     };
   }

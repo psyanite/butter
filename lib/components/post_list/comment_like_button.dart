@@ -1,5 +1,4 @@
 import 'package:butter/models/comment.dart';
-import 'package:butter/presentation/components.dart';
 import 'package:butter/state/app/app_state.dart';
 import 'package:butter/state/comment/comment_actions.dart';
 import 'package:flutter/material.dart';
@@ -40,29 +39,20 @@ class _CommentLikeButtonState extends State<CommentLikeButton> with TickerProvid
     return StoreConnector<AppState, dynamic>(
       converter: (Store<AppState> store) => _Props.fromStore(store, widget.comment),
       builder: (context, props) {
-        var isFavorited = widget.comment.likedBy.contains(props.myId);
-        var onFavorite = () {
-          if (props.isLoggedIn) {
-            props.favoriteComment(widget.comment);
-          } else {
-            snack(context, 'Login now to favourite comments');
-          }
-        };
-        var onUnfavorite = () {
-          props.unfavoriteComment(widget.comment);
-        };
+        var isFavorited = widget.comment.likedByStores.contains(props.myStoreId);
         var onTap = () {
           paddingCtrl.forward(from: 0.0);
-          isFavorited ? onUnfavorite() : onFavorite();
+          isFavorited ? props.unfavoriteComment(widget.comment) : props.favoriteComment(widget.comment);
         };
         return _Presenter(
           onTap: onTap,
           isFavorited: isFavorited,
           size: 22.0,
           padding: 2.0 - paddingCtrl.value,
-          count: widget.comment.likedBy.length,
+          count: widget.comment.likedByUsers.length + widget.comment.likedByStores.length,
         );
-      });
+      },
+    );
   }
 }
 
@@ -101,23 +91,19 @@ class _Presenter extends StatelessWidget {
 }
 
 class _Props {
-  final bool isLoggedIn;
-  final int myId;
+  final int myStoreId;
   final Function favoriteComment;
   final Function unfavoriteComment;
 
   _Props({
-    this.isLoggedIn,
-    this.myId,
+    this.myStoreId,
     this.favoriteComment,
     this.unfavoriteComment,
   });
 
   static fromStore(Store<AppState> store, Comment comment) {
-    var me = store.state.me.admin;
     return _Props(
-      isLoggedIn: me != null,
-      myId: me != null ? me.id : 0,
+      myStoreId: store.state.me.store.id,
       favoriteComment: (comment) => store.dispatch(FavoriteComment(comment)),
       unfavoriteComment: (comment) => store.dispatch(UnfavoriteComment(comment)),
     );

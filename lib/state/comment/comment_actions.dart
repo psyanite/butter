@@ -21,10 +21,10 @@ class FavoriteComment {
 }
 
 class FavoriteCommentSuccess {
-  final int myId;
+  final int myStoreId;
   final Comment comment;
 
-  FavoriteCommentSuccess(this.myId, this.comment);
+  FavoriteCommentSuccess(this.myStoreId, this.comment);
 }
 
 class UnfavoriteComment {
@@ -34,10 +34,10 @@ class UnfavoriteComment {
 }
 
 class UnfavoriteCommentSuccess {
-  final int myId;
+  final int myStoreId;
   final Comment comment;
 
-  UnfavoriteCommentSuccess(this.myId, this.comment);
+  UnfavoriteCommentSuccess(this.myStoreId, this.comment);
 }
 
 class FavoriteReply {
@@ -48,11 +48,11 @@ class FavoriteReply {
 }
 
 class FavoriteReplySuccess {
-  final int myId;
+  final int myStoreId;
   final int postId;
   final Reply reply;
 
-  FavoriteReplySuccess(this.myId, this.postId, this.reply);
+  FavoriteReplySuccess(this.myStoreId, this.postId, this.reply);
 }
 
 class UnfavoriteReply {
@@ -63,9 +63,9 @@ class UnfavoriteReply {
 }
 
 class UnfavoriteReplySuccess {
-  final int myId;
+  final int myStoreId;
   final int postId;
   final Reply reply;
 
-  UnfavoriteReplySuccess(this.myId, this.postId, this.reply);
+  UnfavoriteReplySuccess(this.myStoreId, this.postId, this.reply);
 }

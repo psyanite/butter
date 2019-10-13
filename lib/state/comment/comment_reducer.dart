@@ -15,17 +15,17 @@ CommentState fetchCommentsSuccess(CommentState state, FetchCommentsSuccess actio
 }
 
 CommentState favoriteCommentSuccess(CommentState state, FavoriteCommentSuccess action) {
-  return state.favoriteComment(action.myId, action.comment);
+  return state.favoriteComment(action.myStoreId, action.comment);
 }
 
 CommentState unfavoriteCommentSuccess(CommentState state, UnfavoriteCommentSuccess action) {
-  return state.unfavoriteComment(action.myId, action.comment);
+  return state.unfavoriteComment(action.myStoreId, action.comment);
 }
 
 CommentState favoriteReplySuccess(CommentState state, FavoriteReplySuccess action) {
-  return state.favoriteReply(action.myId, action.postId, action.reply);
+  return state.favoriteReply(action.myStoreId, action.postId, action.reply);
 }
 
 CommentState unfavoriteReplySuccess(CommentState state, UnfavoriteReplySuccess action) {
-  return state.unfavoriteReply(action.myId, action.postId, action.reply);
+  return state.unfavoriteReply(action.myStoreId, action.postId, action.reply);
 }

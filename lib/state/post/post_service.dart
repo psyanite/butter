@@ -1,6 +1,5 @@
 import 'package:butter/models/post.dart';
 import 'package:butter/services/toaster.dart';
-import 'package:butter/utils/enum_util.dart';
 
 class PostService {
   const PostService();

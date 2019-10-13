@@ -34,56 +34,44 @@ Middleware<AppState> _fetchComments(CommentService service) {
 
 Middleware<AppState> _favoriteComment(CommentService service) {
   return (Store<AppState> store, action, NextDispatcher next) {
-//    var myId = store.state.me.user.id;
-//    service.favoriteComment(userId: myId, commentId: action.comment.id).then((success) {
-//      if (success) {
-//        store.dispatch(FavoriteCommentSuccess(myId, action.comment));
-//      } else {
-//        store.dispatch(RequestFailure("Failed to favorite comment: ${action.comment.id}"));
-//      }
-//    }).catchError((e) => store.dispatch(RequestFailure("favoriteComments ${e.toString()}")));
+    var myStoreId = store.state.me.store.id;
+    store.dispatch(FavoriteCommentSuccess(myStoreId, action.comment));
+    service.favoriteComment(storeId: myStoreId, commentId: action.comment.id).then((success) {
+      if (success == false) store.dispatch(RequestFailure("Failed to favorite comment: ${action.comment.id}"));
+    }).catchError((e) => store.dispatch(RequestFailure("favoriteComment ${e.toString()}")));
     next(action);
   };
 }
 
 Middleware<AppState> _unfavoriteComment(CommentService service) {
   return (Store<AppState> store, action, NextDispatcher next) {
-//    var myId = store.state.me.user.id;
-//    service.unfavoriteComment(userId: myId, commentId: action.comment.id).then((success) {
-//      if (success) {
-//        store.dispatch(UnfavoriteCommentSuccess(myId, action.comment));
-//      } else {
-//        store.dispatch(RequestFailure("Failed to unfavorite comment: ${action.comment.id}"));
-//      }
-//    }).catchError((e) => store.dispatch(RequestFailure("unfavoriteComments ${e.toString()}")));
+    var myStoreId = store.state.me.store.id;
+    store.dispatch(UnfavoriteCommentSuccess(myStoreId, action.comment));
+    service.unfavoriteComment(storeId: myStoreId, commentId: action.comment.id).then((success) {
+      if (success == false) store.dispatch(RequestFailure("Failed to unfavorite comment: ${action.comment.id}"));
+    }).catchError((e) => store.dispatch(RequestFailure("unfavoriteComment ${e.toString()}")));
     next(action);
   };
 }
 
 Middleware<AppState> _favoriteReply(CommentService service) {
   return (Store<AppState> store, action, NextDispatcher next) {
-//    var myId = store.state.me.user.id;
-//    service.favoriteReply(userId: store.state.me.user.id, replyId: action.reply.id).then((success) {
-//      if (success) {
-//        store.dispatch(FavoriteReplySuccess(myId, action.postId, action.reply));
-//      } else {
-//        store.dispatch(RequestFailure("Failed to favorite reply: ${action.reply.id}"));
-//      }
-//    }).catchError((e) => store.dispatch(RequestFailure("favoriteReply ${e.toString()}")));
+    var myStoreId = store.state.me.store.id;
+    store.dispatch(FavoriteReplySuccess(myStoreId, action.postId, action.reply));
+    service.favoriteReply(storeId: myStoreId, replyId: action.reply.id).then((success) {
+      if (success == false) store.dispatch(RequestFailure("Failed to favorite reply: ${action.reply.id}"));
+    }).catchError((e) => store.dispatch(RequestFailure("favoriteReply ${e.toString()}")));
     next(action);
   };
 }
 
 Middleware<AppState> _unfavoriteReply(CommentService service) {
   return (Store<AppState> store, action, NextDispatcher next) {
-//    var myId = store.state.me.user.id;
-//    service.unfavoriteReply(userId: myId, replyId: action.reply.id).then((success) {
-//      if (success) {
-//        store.dispatch(UnfavoriteReplySuccess(myId, action.postId, action.reply));
-//      } else {
-//        store.dispatch(RequestFailure("Failed to unfavorite reply: ${action.reply.id}"));
-//      }
-//    }).catchError((e) => store.dispatch(RequestFailure("unfavoriteReply ${e.toString()}")));
+    var myStoreId = store.state.me.store.id;
+    store.dispatch(UnfavoriteReplySuccess(myStoreId, action.postId, action.reply));
+    service.unfavoriteReply(storeId: myStoreId, replyId: action.reply.id).then((success) {
+      if (success == false) store.dispatch(RequestFailure("Failed to unfavorite reply: ${action.reply.id}"));
+    }).catchError((e) => store.dispatch(RequestFailure("unfavoriteReply ${e.toString()}")));
     next(action);
   };
 }

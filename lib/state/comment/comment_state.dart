@@ -29,27 +29,27 @@ class CommentState {
     return copyWith(comments: clone);
   }
 
-  CommentState favoriteComment(int myId, Comment comment) {
+  CommentState favoriteComment(int myStoreId, Comment comment) {
     var clone = cloneComments();
-    clone[comment.postId][comment.id].likedBy.add(myId);
+    clone[comment.postId][comment.id].likedByStores.add(myStoreId);
     return copyWith(comments: clone);
   }
 
-  CommentState unfavoriteComment(int myId, Comment comment) {
+  CommentState unfavoriteComment(int myStoreId, Comment comment) {
     var clone = cloneComments();
-    clone[comment.postId][comment.id].likedBy.remove(myId);
+    clone[comment.postId][comment.id].likedByStores.remove(myStoreId);
     return copyWith(comments: clone);
   }
 
-  CommentState favoriteReply(int myId, int postId, Reply reply) {
+  CommentState favoriteReply(int myStoreId, int postId, Reply reply) {
     var clone = cloneComments();
-    clone[postId][reply.commentId].replies[reply.id].likedBy.add(myId);
+    clone[postId][reply.commentId].replies[reply.id].likedByStores.add(myStoreId);
     return copyWith(comments: clone);
   }
 
-  CommentState unfavoriteReply(int myId, int postId, Reply reply) {
+  CommentState unfavoriteReply(int myStoreId, int postId, Reply reply) {
     var clone = cloneComments();
-    clone[postId][reply.commentId].replies[reply.id].likedBy.remove(myId);
+    clone[postId][reply.commentId].replies[reply.id].likedByStores.remove(myStoreId);
     return copyWith(comments: clone);
   }
 
