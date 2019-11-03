@@ -184,12 +184,12 @@ class _PresenterState extends State<_Presenter> {
                     InkWell(
                       splashColor: Burnt.splashOrange,
                       highlightColor: Colors.transparent,
-                      onTap: () => launch('tel:0${store.phoneNumber}'),
+                      onTap: () => launch('tel:${store.phoneNumber}'),
                       child: Row(
                         children: <Widget>[
                           Icon(CrustCons.call_bold, size: 35.0, color: Burnt.iconOrange),
                           Container(width: 10.0),
-                          Text('0${store.phoneNumber}', style: TextStyle(color: Burnt.hintTextColor)),
+                          Text('${store.phoneNumber}', style: TextStyle(color: Burnt.hintTextColor)),
                         ],
                       ),
                     ),
