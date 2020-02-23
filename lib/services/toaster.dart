@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:butter/config/config.dart';
 import 'package:http/http.dart' as http;
 
+import 'log.dart';
+
 final url = '${Config.toasterHost}/graphql';
 
 final Map<String, String> headers = {
@@ -16,11 +18,12 @@ class Toaster {
   static Future<Map<String, dynamic>> get(String body, {Map<String, dynamic> variables}) async {
     var requestBody = json.encode({'query': body });
     var response = await http.post(url, body: requestBody, headers: headers);
-    var responseBody = json.decode(response.body);
-    if (response.statusCode != 200 || responseBody['errors'] != null) {
-      print('Toaster request failed: {\n${body.trimRight()}\n}');
-      print('${response.statusCode} response: ${response.body}');
-      return responseBody;
+    var responseBody;
+    try { responseBody = json.decode(response.body); } catch (e, stack) { Log.error('$e, $stack'); }
+    if (response.statusCode != 200 || responseBody == null || responseBody['errors'] != null) {
+      Log.error('Toaster request failed: {\n${body.trimRight()}\n}');
+      Log.error('${response.statusCode} response: ${response.body}');
+      return Map<String, dynamic>();
     }
     return responseBody['data'];
   }

@@ -3,6 +3,10 @@ import 'dart:collection';
 class Utils {
   static final shareBaseUrl = 'https://burntoast.page.link/?link=https://burntoast.com';
 
+  static int strToInt(String str) {
+    return str != null ? int.parse(str) : null;
+  }
+
   static String buildStoreUrl(int id) {
     return '$shareBaseUrl/stores/?id=$id';
   }
@@ -41,6 +45,17 @@ class Utils {
     var allow = '0123456789abcdefghijklmnopqrstuvwxyz._'.split('');
     if (!name.split('').every((char) => allow.contains(char))) {
       return 'Sorry, usernames can only have lowercase letters, numbers, underscores, and periods';
+    }
+    return null;
+  }
+
+  static String validateEmail(String email) {
+    if (email == null || email.isEmpty) {
+      return 'Oops! Email can\'t be blank';
+    }
+    var regex = RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    if (!regex.hasMatch(email)) {
+      return 'Sorry, email address is invalid';
     }
     return null;
   }

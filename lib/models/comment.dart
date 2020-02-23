@@ -71,7 +71,7 @@ class Comment {
       name,
       cover_image,
     },
-    commented_at
+    commented_at,
   """;
 
   String replyTo() {

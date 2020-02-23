@@ -1,6 +1,6 @@
 import 'package:butter/components/dialog/confirm.dart';
 import 'package:butter/main.dart';
-import 'package:butter/models/admin.dart';
+import 'package:butter/models/user.dart';
 import 'package:butter/presentation/components.dart';
 import 'package:butter/presentation/theme.dart';
 import 'package:butter/state/app/app_state.dart';
@@ -71,14 +71,14 @@ class ContactUsScreen extends StatelessWidget {
 }
 
 class _Props {
-  final Admin me;
+  final User me;
   final Function logout;
 
   _Props({this.me, this.logout});
 
   static fromStore(Store<AppState> store) {
     return _Props(
-      me: store.state.me.admin,
+      me: store.state.me.user,
       logout: () => store.dispatch(Logout()),
     );
   }

@@ -145,7 +145,7 @@ class _PresenterState extends State<EditPostScreen> {
 
   bool _isValid(BuildContext context) {
     if ((_bodyCtrl.text == null || _bodyCtrl.text.isEmpty) && _images.isEmpty) {
-      snack(context, "Add some photos or add some thoughts");
+      snack(context, 'Add some photos or add some thoughts');
       return false;
     }
     if (_images.isNotEmpty) {
@@ -168,9 +168,9 @@ class _PresenterState extends State<EditPostScreen> {
     });
     if (!isValid) {
       if (_images.length == 1) {
-        return "Oops! The photo is larger than 5000x5000";
+        return 'Oops! The photo is larger than 5000x5000';
       } else {
-        return "Oops! One of the photos is larger than 5000x5000";
+        return 'Oops! One of the photos is larger than 5000x5000';
       }
     }
     return null;

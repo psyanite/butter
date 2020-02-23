@@ -2,9 +2,9 @@ import 'dart:typed_data';
 
 import 'package:butter/components/new_post/upload_overlay.dart';
 import 'package:butter/components/photo/photo_selector.dart';
-import 'package:butter/models/admin.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/models/store.dart' as MyStore;
+import 'package:butter/models/user.dart';
 import 'package:butter/presentation/components.dart';
 import 'package:butter/presentation/theme.dart';
 import 'package:butter/state/app/app_state.dart';
@@ -31,7 +31,7 @@ class ReviewForm extends StatelessWidget {
 
 class _Presenter extends StatefulWidget {
   final MyStore.Store store;
-  final Admin me;
+  final User me;
 
   _Presenter({Key key, this.store, this.me}) : super(key: key);
 
@@ -142,7 +142,7 @@ class _PresenterState extends State<_Presenter> {
 
   bool _isValid(BuildContext context) {
     if ((_reviewBody == null || _reviewBody.isEmpty) && _images.isEmpty) {
-      snack(context, "Add some photos or add some thoughts");
+      snack(context, 'Add some photos or add some thoughts');
       return false;
     }
     if (_images.isNotEmpty) {
@@ -165,9 +165,9 @@ class _PresenterState extends State<_Presenter> {
     });
     if (!isValid) {
       if (_images.length == 1) {
-        return "Oops! Photo has to be smaller than 5000x5000";
+        return 'Oops! Photo has to be smaller than 5000x5000';
       } else {
-        return "Oops! All the photos have to be smaller than 5000x5000";
+        return 'Oops! All the photos have to be smaller than 5000x5000';
       }
     }
     return null;
@@ -183,7 +183,7 @@ class _PresenterState extends State<_Presenter> {
       postReview: PostReview(
         body: _reviewBody,
       ),
-      postedByAdmin: widget.me,
+      postedBy: widget.me,
     );
 
     setState(() {
@@ -243,7 +243,7 @@ class _PresenterState extends State<_Presenter> {
 
 class _Props {
   final MyStore.Store store;
-  final Admin me;
+  final User me;
 
   _Props({
     this.store,
@@ -253,7 +253,7 @@ class _Props {
   static fromStore(Store<AppState> store) {
     return _Props(
       store: store.state.me.store,
-      me: store.state.me.admin,
+      me: store.state.me.user,
     );
   }
 }

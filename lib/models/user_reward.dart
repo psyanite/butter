@@ -49,7 +49,7 @@ class UserReward {
     reward_id,
     unique_code,
     last_redeemed_at,
-    redeemed_count
+    redeemed_count,
   """;
 
   @override

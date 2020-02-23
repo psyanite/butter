@@ -29,16 +29,16 @@ class ProfileScreen extends StatelessWidget {
         }
       },
       converter: (Store<AppState> store) => _Props.fromStore(store, userId),
-      builder: (context, props) => _Presenter(user: props.me, myProfile: props.myProfile),
+      builder: (context, props) => _Presenter(userId: userId, user: props.user),
     );
   }
 }
 
 class _Presenter extends StatefulWidget {
+  final int userId;
   final User user;
-  final bool myProfile;
 
-  _Presenter({Key key, this.user, this.myProfile}) : super(key: key);
+  _Presenter({Key key, this.userId, this.user}) : super(key: key);
 
   @override
   _PresenterState createState() => _PresenterState();
@@ -71,30 +71,39 @@ class _PresenterState extends State<_Presenter> {
     this.setState(() => _posts = fresh);
   }
 
-  removeFromList(index, postId) {
+  Future<void> _refresh() async {
+    var fresh = await PostService.fetchPostsByUserId(userId: widget.userId, limit: 12, offset: 0);
+    this.setState(() {
+      _limit = 12;
+      _posts = fresh;
+    });
+  }
+
+  _removeFromList(index, postId) {
     this.setState(() => _posts = List<Post>.from(_posts)..removeAt(index));
   }
 
   Future<List<Post>> _getPosts() async {
     var offset = _posts != null ? _posts.length : 0;
-    return PostService.fetchPostsByUserId(userId: widget.user.id, limit: _limit, offset: offset);
+    return PostService.fetchPostsByUserId(userId: widget.userId, limit: _limit, offset: offset);
   }
 
   _getMorePosts() async {
     this.setState(() => _loading = true);
     var fresh = await _getPosts();
-    if (fresh.isEmpty) {
+    if (fresh.length < _limit) {
       this.setState(() {
         _limit = 0;
         _loading = false;
       });
-      return;
     }
-    var update = List<Post>.from(_posts)..addAll(fresh);
-    this.setState(() {
-      _posts = update;
-      _loading = false;
-    });
+    if (fresh.isNotEmpty) {
+      var update = List<Post>.from(_posts)..addAll(fresh);
+      this.setState(() {
+        _posts = update;
+        _loading = false;
+      });
+    }
   }
 
   @override
@@ -102,16 +111,19 @@ class _PresenterState extends State<_Presenter> {
     var user = widget.user;
     if (user == null) return LoadingScreen();
     return Scaffold(
-      body: CustomScrollView(slivers: <Widget>[
-        _appBar(),
-        PostList(
-          noPostsView: Text('Looks like ${user.firstName} hasn\'t written any reviews yet.'),
-          postListType: PostListType.forProfile,
-          posts: _posts,
-          removeFromList: removeFromList,
-        ),
-        if (_loading == true) LoadingSliver(),
-      ]),
+      body: RefreshIndicator(
+        onRefresh: _refresh,
+        child: CustomScrollView(slivers: <Widget>[
+          _appBar(),
+          PostList(
+            noPostsView: Text('Looks like ${user.firstName} hasn\'t written any reviews yet.'),
+            postListType: PostListType.forProfile,
+            posts: _posts,
+            removeFromList: _removeFromList,
+          ),
+          if (_loading == true) LoadingSliver(),
+        ]),
+      ),
     );
   }
 
@@ -124,13 +136,7 @@ class _PresenterState extends State<_Presenter> {
             children: <Widget>[
               Container(height: 200.0),
               Stack(children: <Widget>[
-                Container(
-                  height: 150.0,
-                  decoration: BoxDecoration(
-                    color: Burnt.separator,
-                    image: DecorationImage(image: NetworkImage(user.profilePicture), fit: BoxFit.cover),
-                  ),
-                ),
+                NetworkImg(user.profilePicture, height: 150.0),
                 Container(
                   height: 150.0,
                   decoration: BoxDecoration(color: Color(0x55000000)),
@@ -163,7 +169,7 @@ class _PresenterState extends State<_Presenter> {
               Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
                 Text(user.displayName, style: Burnt.titleStyle),
                 Container(width: 4.0),
-                Text("@${user.username}"),
+                Text('@${user.username}'),
               ]),
             ],
           ),
@@ -199,17 +205,11 @@ class _PresenterState extends State<_Presenter> {
 }
 
 class _Props {
-  final User me;
-  final bool myProfile;
+  final User user;
 
-  _Props({this.me, this.myProfile = false});
+  _Props({this.user});
 
   static fromStore(Store<AppState> store, int userId) {
-    var me = store.state.me.admin;
-    var myProfile = me != null && me?.id == userId;
-    if (store.state.user.users == null || myProfile) {
-      return _Props(me: null, myProfile: myProfile);
-    }
-    return _Props(me: store.state.user.users[userId]);
+    return _Props(user: store.state.user.users[userId]);
   }
 }

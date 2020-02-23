@@ -1,13 +1,12 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:butter/components/photo/carousel.dart';
 import 'package:butter/components/post_list/comment_screen.dart';
 import 'package:butter/components/post_list/post_list.dart';
 import 'package:butter/components/screens/profile_screen.dart';
-import 'package:butter/components/screens/store_screen.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/presentation/components.dart';
 import 'package:butter/presentation/theme.dart';
 import 'package:butter/utils/time_util.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -36,7 +35,7 @@ class PostInfo extends StatelessWidget {
   }
 
   Widget _header() {
-    if (post.isOfficialStorePost()) {
+    if (post.official == true) {
       return _officialHeaderContent();
     } else if (postListType == PostListType.forProfile) {
       return _profileHeaderContent();
@@ -57,12 +56,8 @@ class PostInfo extends StatelessWidget {
         ),
       ],
     );
-    return Builder(builder: (context) {
-      return InkWell(
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoreScreen(storeId: post.store.id))),
-        child: Padding(padding: EdgeInsets.only(bottom: 20.0), child: details),
-      );
-    });
+
+    return Padding(padding: EdgeInsets.only(bottom: 20.0), child: details);
   }
 
   Widget _profileHeaderContent() {
@@ -76,14 +71,11 @@ class PostInfo extends StatelessWidget {
       ],
     );
     return Builder(builder: (context) {
-      return InkWell(
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoreScreen(storeId: post.store.id))),
-        child: Padding(
-          padding: EdgeInsets.only(bottom: 20.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[details, _scoreIcon()],
-          ),
+      return Padding(
+        padding: EdgeInsets.only(bottom: 20.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[details, _scoreIcon()],
         ),
       );
     });
@@ -98,7 +90,7 @@ class PostInfo extends StatelessWidget {
           children: <Widget>[
             Row(children: <Widget>[
               _name(post.postedBy.displayName),
-              Text(" @${post.postedBy.username}", style: TextStyle(color: Burnt.hintTextColor))
+              Text(' @${post.postedBy.username}', style: TextStyle(color: Burnt.hintTextColor))
             ]),
             _postedAt(),
           ],
@@ -133,7 +125,7 @@ class PostInfo extends StatelessWidget {
                 children: <Widget>[
                   Row(children: <Widget>[
                     _name(post.postedBy.displayName),
-                    Text(" @${post.postedBy.username}", style: TextStyle(color: Burnt.hintTextColor))
+                    Text(' @${post.postedBy.username}', style: TextStyle(color: Burnt.hintTextColor))
                   ]),
                   _postedAt(),
                 ],
@@ -143,12 +135,9 @@ class PostInfo extends StatelessWidget {
           ],
         ),
       );
-      var storeName = InkWell(
-        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoreScreen(storeId: post.store.id))),
-        child: Padding(
-          padding: EdgeInsets.only(top: 20.0, bottom: 3.0),
-          child: Text(post.store.name, style: TextStyle(fontSize: 19.0, color: Burnt.lightTextColor)),
-        ),
+      var storeName = Padding(
+        padding: EdgeInsets.only(top: 20.0, bottom: 3.0),
+        child: Text(post.store.name, style: TextStyle(fontSize: 19.0, color: Burnt.lightTextColor)),
       );
       return Column(
         crossAxisAlignment: _showReview() ? CrossAxisAlignment.start : CrossAxisAlignment.center,

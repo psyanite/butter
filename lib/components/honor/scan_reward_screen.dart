@@ -20,15 +20,15 @@ class ScanRewardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, dynamic>(
       converter: (Store<AppState> store) => _Props.fromStore(store),
-      builder: (context, props) => _Presenter(adminId: props.adminId),
+      builder: (context, props) => _Presenter(myId: props.myId),
     );
   }
 }
 
 class _Presenter extends StatefulWidget {
-  final int adminId;
+  final int myId;
 
-  _Presenter({Key key, this.adminId}) : super(key: key);
+  _Presenter({Key key, this.myId}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PresenterState();
@@ -41,7 +41,7 @@ class _PresenterState extends State<_Presenter> {
     var code = await _scan();
     if (code == null) return;
 
-    var result = await RewardService.canHonorUserReward(widget.adminId, code);
+    var result = await RewardService.canHonorUserReward(widget.myId, code);
     var error = result['error'];
     if (error != null) {
       var userReward = await RewardService.fetchUserRewardByCode(code);
@@ -65,7 +65,7 @@ class _PresenterState extends State<_Presenter> {
     }
 
     if (userReward.reward.isExpired()) {
-      var lastDay = DateFormat.MMMEd("en_US").format(userReward.reward.validUntil);
+      var lastDay = DateFormat.MMMEd('en_US').format(userReward.reward.validUntil);
       _setError('Sorry, this reward expired on the $lastDay');
       return;
     }
@@ -159,13 +159,13 @@ class _PresenterState extends State<_Presenter> {
 }
 
 class _Props {
-  final int adminId;
+  final int myId;
 
-  _Props({this.adminId});
+  _Props({this.myId});
 
   static fromStore(Store<AppState> store) {
     return _Props(
-      adminId: store.state.me.admin.id,
+      myId: store.state.me.user.id,
     );
   }
 }

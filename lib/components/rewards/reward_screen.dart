@@ -192,7 +192,7 @@ class RewardScreen extends StatelessWidget {
               Container(height: 7.0),
               Text('Available across ${group.stores.length.toString()} locations'),
               Container(height: 3.0),
-              Text(group.stores.map((s) => s.location ?? s.suburb).join(", ")),
+              Text(group.stores.map((s) => s.location ?? s.suburb).join(', ')),
               Container(height: 10.0),
               Text('More Information', style: TextStyle(color: Burnt.primaryTextColor)),
             ],

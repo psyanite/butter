@@ -1,4 +1,3 @@
-import 'package:butter/components/screens/store_screen.dart';
 import 'package:butter/models/store.dart' as MyStore;
 import 'package:butter/models/store_group.dart';
 import 'package:butter/presentation/components.dart';
@@ -58,17 +57,14 @@ class RewardLocationsScreen extends StatelessWidget {
   Widget _storeCard(MyStore.Store store) {
     return Builder(
       builder: (context) {
-        return InkWell(
-          onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => StoreScreen(storeId: store.id))),
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 10.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                _details(store),
-                _map(context, store),
-              ],
-            ),
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _details(store),
+              _map(context, store),
+            ],
           ),
         );
       },
@@ -77,11 +73,11 @@ class RewardLocationsScreen extends StatelessWidget {
 
   Widget _details(MyStore.Store store) {
     var address = store.address;
-    var firstLine = "";
-    if (address.firstLine != null) firstLine += "${address.firstLine}";
-    if (address.secondLine != null) firstLine += ", ${address.secondLine}";
-    var secondLine = "${address.streetNumber} ${address.streetName}";
-    if (store.location != null) secondLine += ", ${store.location}";
+    var firstLine = '';
+    if (address.firstLine != null) firstLine += '${address.firstLine}';
+    if (address.secondLine != null) firstLine += ', ${address.secondLine}';
+    var secondLine = '${address.streetNumber} ${address.streetName}';
+    if (store.location != null) secondLine += ', ${store.location}';
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

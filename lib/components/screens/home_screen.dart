@@ -4,10 +4,10 @@ import 'package:butter/components/common/store_banner.dart';
 import 'package:butter/components/new_post/review_form.dart';
 import 'package:butter/components/post_list/post_list.dart';
 import 'package:butter/components/rewards/reward_swiper.dart';
-import 'package:butter/models/admin.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/models/store.dart' as MyStore;
+import 'package:butter/models/user.dart';
 import 'package:butter/presentation/components.dart';
 import 'package:butter/presentation/crust_cons_icons.dart';
 import 'package:butter/presentation/theme.dart';
@@ -105,7 +105,7 @@ class _PresenterState extends State<_Presenter> {
     });
   }
 
-  _refresh() async {
+  Future<void> _refresh() async {
     var fresh = await MeService.fetchPostsByStoreId(storeId: widget.store.id, limit: 12, offset: 0);
     this.setState(() {
       _limit = 12;
@@ -118,10 +118,7 @@ class _PresenterState extends State<_Presenter> {
     if (widget.store == null) return Scaffold(body: LoadingCenter());
     return Scaffold(
       body: RefreshIndicator(
-        onRefresh: () async {
-          _refresh();
-          await Future.delayed(Duration(seconds: 1));
-        },
+        onRefresh: _refresh,
         child: CustomScrollView(
           slivers: <Widget>[
             _appBar(),
@@ -301,7 +298,7 @@ class _PresenterState extends State<_Presenter> {
 }
 
 class _Props {
-  final Admin me;
+  final User me;
   final MyStore.Store store;
   final List<Reward> rewards;
   final Function logout;
@@ -310,7 +307,7 @@ class _Props {
 
   static fromStore(Store<AppState> store) {
     return _Props(
-      me: store.state.me.admin,
+      me: store.state.me.user,
       store: store.state.me.store,
       rewards: store.state.me.rewards.values.toList(),
       logout: () => store.dispatch(Logout()),

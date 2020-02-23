@@ -20,7 +20,7 @@ Middleware<AppState> _favoritePost(FavoriteService service) {
 //    store.dispatch(FavoritePostSuccess(action.postId));
 //      service.favoritePost(userId: store.state.me.user.id, postId: action.postId).then((posts) {
 //        store.dispatch(FetchFavoritesSuccess(favoritePosts: posts));
-//    }).catchError((e) => store.dispatch(RequestFailure("favoritePost ${e.toString()}")));
+//    }).catchError((e) => store.dispatch(RequestFailure("favoritePost $e")));
     next(action);
   };
 }
@@ -30,7 +30,7 @@ Middleware<AppState> _unfavoritePost(FavoriteService service) {
 //    store.dispatch(UnfavoritePostSuccess(action.postId));
 //    service.unfavoritePost(userId: store.state.me.user.id, postId: action.postId).then((posts) {
 //      store.dispatch(FetchFavoritesSuccess(favoritePosts: posts));
-//    }).catchError((e) => store.dispatch(RequestFailure("unfavoritePost ${e.toString()}")));
+//    }).catchError((e) => store.dispatch(RequestFailure("unfavoritePost $e")));
     next(action);
   };
 }
@@ -43,7 +43,7 @@ Middleware<AppState> _fetchFavorites(FavoriteService service) {
 //        List<int> postIds = map['postIds'];
 //        store.dispatch(FetchFavoritesSuccess(
 //          favoritePosts: postIds.toSet()));
-//      }).catchError((e) => store.dispatch(RequestFailure("fetchFavorites ${e.toString()}")));
+//      }).catchError((e) => store.dispatch(RequestFailure("fetchFavorites $e")));
 //    }
     next(action);
   };

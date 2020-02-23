@@ -5,6 +5,7 @@ import 'package:butter/components/screens/home_screen.dart';
 import 'package:butter/components/screens/settings_screen.dart';
 import 'package:butter/presentation/crust_cons_icons.dart';
 import 'package:butter/presentation/theme.dart';
+import 'package:butter/services/firebase_messenger.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -30,6 +31,8 @@ class MainTabNavigatorState extends State<MainTabNavigator> {
       TabType.scanReward: Tab(widget: ScanRewardScreen(), icon: CrustCons.qr),
       TabType.settings: Tab(widget: SettingsScreen(), icon: CrustCons.person)
     };
+
+    FirebaseMessenger(context: context);
   }
 
   @override

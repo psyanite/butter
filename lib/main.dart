@@ -3,30 +3,32 @@ import 'package:butter/components/screens/contact_us_screen.dart';
 import 'package:butter/components/screens/login_screen.dart';
 import 'package:butter/components/screens/splash_screen.dart';
 import 'package:butter/presentation/platform_adaptive.dart';
+import 'package:butter/services/log.dart';
 import 'package:butter/state/app/app_middleware.dart';
 import 'package:butter/state/app/app_reducer.dart';
 import 'package:butter/state/app/app_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_logging/redux_logging.dart';
 import 'package:redux_persist/redux_persist.dart';
 import 'package:redux_persist_flutter/redux_persist_flutter.dart';
-import 'package:redux_thunk/redux_thunk.dart';
 
 main() async {
-  final persistor = Persistor<AppState>(storage: FlutterStorage(key: 'butter'), serializer: JsonSerializer<AppState>(AppState.rehydrate));
+  WidgetsFlutterBinding.ensureInitialized();
 
+  final persistor = Persistor<AppState>(storage: FlutterStorage(key: 'butter'), serializer: JsonSerializer<AppState>(AppState.rehydrate));
   var initialState;
   try {
     initialState = await persistor.load();
-  } catch (e) {
+  } catch (e, stack) {
+    Log.error('$e, $stack');
     initialState = null;
   }
 
   List<Middleware<AppState>> createMiddleware() {
     return <Middleware<AppState>>[
-      thunkMiddleware,
       persistor.createMiddleware(),
       LoggingMiddleware.printer(),
       ...createAppMiddleware(),
@@ -56,10 +58,23 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(
+        systemNavigationBarColor: Color(0xFFEEEEEE),
+        systemNavigationBarDividerColor: null,
+        systemNavigationBarIconBrightness: Brightness.dark,
+        statusBarColor: Colors.transparent,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+      )
+    );
+
     return StoreProvider<AppState>(
       store: store,
       child: MaterialApp(
         title: 'Burntoast Promote',
+        debugShowCheckedModeBanner: false,
         color: Color(0xFFF2993E),
         theme: getTheme(context),
         initialRoute: MainRoutes.splash,

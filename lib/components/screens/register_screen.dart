@@ -12,7 +12,10 @@ class RegisterScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, dynamic>(
-      converter: (Store<AppState> store) => (u, s) => store.dispatch(LoginSuccess(u, s)),
+      converter: (Store<AppState> store) => (u, s) {
+        store.dispatch(LoginSuccess(u, s));
+        store.dispatch(CheckFcmToken());
+      },
       builder: (context, loginSuccess) => _Presenter(loginSuccess: loginSuccess),
     );
   }
@@ -30,6 +33,7 @@ class _Presenter extends StatefulWidget {
 class _PresenterState extends State<_Presenter> {
   String _un;
   String _pw;
+  String _em;
   String _confirmPw;
 
   @override
@@ -53,15 +57,17 @@ class _PresenterState extends State<_Presenter> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Text("Sign Up", style: TextStyle(fontSize: 24.0, color: Colors.white), textAlign: TextAlign.center),
+                  Text('Sign Up', style: TextStyle(fontSize: 24.0, color: Colors.white), textAlign: TextAlign.center),
                   Container(height: 20.0),
                   _textField('Username', (val) => setState(() => _un = val), false),
+                  Container(height: 20.0),
+                  _textField('Email', (val) => setState(() => _em = val), false),
                   Container(height: 20.0),
                   _textField('Password', (val) => setState(() => _pw = val), true),
                   Container(height: 20.0),
                   _textField('Confirm Password', (val) => setState(() => _confirmPw = val), true),
                   Container(height: 30.0),
-                  WhiteButton(text: "Sign Up", onPressed: () => _submit(context)),
+                  WhiteButton(text: 'Sign Up', onPressed: () => _submit(context)),
                 ],
               ),
             ),
@@ -88,38 +94,50 @@ class _PresenterState extends State<_Presenter> {
 
   _submit(context) async {
     FocusScope.of(context).requestFocus(new FocusNode());
-    var error = Utils.validateUsername(_un);
-    if (error != null) {
-      snack(context, error);
+    var emError = Utils.validateEmail(_em);
+    if (emError != null) {
+      snack(context, emError);
       return;
     }
 
-    if (_pw.length < 8) {
-      snack(context, 'Oops! Passwords must be more than 7 characters long');
+    var unError = Utils.validateUsername(_un);
+    if (unError != null) {
+      snack(context, unError);
       return;
     }
 
-    if (_pw != _confirmPw) {
-      snack(context, 'Oops! Passwords don\'t match');
+    var pwError = _validatePassword();
+    if (pwError != null) {
+      snack(context, pwError);
       return;
     }
 
-    var adminId = await MeService.getAdminIdByUsername(_un);
-    if (adminId != null) {
+    var userIdByUn = await MeService.getUserIdByUsername(_un);
+    if (userIdByUn != null) {
       snack(context, 'Sorry, that username is already taken');
       return;
     }
 
-    var result = await MeService.register(_un, _pw);
-    var admin = result['admin'];
-    var store = result['store'];
+    var userIdByEm = await MeService.getUserIdByEmail(_em);
+    if (userIdByEm != null) {
+      snack(context, 'Sorry, that email is already taken');
+      return;
+    }
 
-    if (admin == null) {
+    var user = await MeService.register(_em, _un, _pw);
+
+    if (user == null) {
       snack(context, 'Oops! Something went wrong, please try again');
       return;
     }
 
-    widget.loginSuccess(admin, store);
-    Navigator.pushReplacementNamed(context, MainRoutes.home);
+    widget.loginSuccess(user, null);
+    Navigator.pushReplacementNamed(context, MainRoutes.contact);
+  }
+
+  String _validatePassword() {
+    if (_pw.length < 8) return 'Oops! Passwords must be more than 7 characters long';
+    if (_pw != _confirmPw) return 'Oops! Passwords don\'t match';
+    return null;
   }
 }

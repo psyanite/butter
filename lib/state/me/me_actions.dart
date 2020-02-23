@@ -1,13 +1,13 @@
-import 'package:butter/models/admin.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/models/store.dart';
+import 'package:butter/models/user.dart';
 
 class LoginSuccess {
-  final Admin admin;
+  final User user;
   final Store store;
 
-  LoginSuccess(this.admin, this.store);
+  LoginSuccess(this.user, this.store);
 }
 
 class Logout {}
@@ -42,4 +42,14 @@ class SetCoverImage {
   final String picture;
 
   SetCoverImage(this.picture);
+}
+
+class CheckFcmToken {
+  CheckFcmToken();
+}
+
+class SetFcmToken {
+  final String token;
+
+  SetFcmToken(this.token);
 }

@@ -21,52 +21,63 @@ class CommentService {
   static Future<Comment> addComment(Comment comment) async {
     String query = """
       mutation {
-        addStoreComment(postId: ${comment.postId}, body: "${comment.body}", storeId: ${comment.commentedByStore.id}) {
+        addComment(
+          postId: ${comment.postId}, 
+          body: "${comment.body}", 
+          commentedBy: ${comment.commentedBy.id},
+          commentedByStore: ${comment.commentedByStore.id},
+        ) {
           ${Comment.attributes}
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['addStoreComment'];
+    var json = response['addComment'];
     return Comment.fromToaster(json);
   }
 
-  static Future<bool> deleteComment({ storeId, comment }) async {
+  static Future<bool> deleteComment({ userId, comment }) async {
     String query = """
       mutation {
-        deleteStoreComment(storeId: $storeId, commentId: ${comment.id}) {
+        deleteComment(myId: $userId, commentId: ${comment.id}) {
           id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['deleteStoreComment'];
+    var json = response['deleteComment'];
     return json['id'] == comment.id;
   }
 
   static Future<Reply> addReply(Reply reply) async {
     String query = """
       mutation {
-        addStoreReply(commentId: ${reply.commentId}, body: "${reply.body}", storeId: ${reply.repliedByStore.id}) {
+        addReply(
+          commentId: ${reply.commentId}, 
+          body: "${reply.body}", 
+          replyTo: ${reply.replyTo},
+          repliedBy: ${reply.repliedBy.id}
+          repliedByStore: ${reply.repliedByStore.id}
+        ) {
           ${Reply.attributes}
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['addStoreReply'];
+    var json = response['addReply'];
     return Reply.fromToaster(json);
   }
 
-  static Future<bool> deleteReply({ storeId, reply }) async {
+  static Future<bool> deleteReply({ userId, reply }) async {
     String query = """
       mutation {
-        deleteStoreReply(storeId: $storeId, replyId: ${reply.id}) {
+        deleteReply(myId: $userId, replyId: ${reply.id}) {
           id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['deleteStoreReply'];
+    var json = response['deleteReply'];
     return json['id'] == reply.id;
   }
 

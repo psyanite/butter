@@ -152,7 +152,7 @@ class _PresenterState extends State<_Presenter> {
       snack(context, 'Select a photo first');
       return;
     } else if (_image.originalHeight > 5000 || _image.originalWidth > 5000) {
-      snack(context, "Oops! Photo has to be smaller than 5000x5000");
+      snack(context, 'Oops! Photo has to be smaller than 5000x5000');
     }
     if (_image != null) setState(() => _showOverlay = true);
   }
@@ -226,7 +226,7 @@ class _UploadOverlayState extends State<_UploadOverlay> {
           child: CircularProgressIndicator(),
         ),
         Container(height: 20.0),
-        Text("Uploading your awesome photo…"),
+        Text('Uploading your awesome photo…'),
       ],
     );
   }
@@ -240,7 +240,7 @@ class _UploadOverlayState extends State<_UploadOverlay> {
 
     var result = await MeService.setCoverImage(storeId: widget.myStoreId, pictureUrl: url);
     if (result != true) {
-      setState(() => _error = "Oops! Something went wrong, please try again.");
+      setState(() => _error = 'Oops! Something went wrong, please try again.');
       return;
     }
 
@@ -251,13 +251,13 @@ class _UploadOverlayState extends State<_UploadOverlay> {
   }
 
   Future<String> _uploadPhoto() async {
-    String timestamp = "${DateTime.now().millisecondsSinceEpoch}";
+    String timestamp = '${DateTime.now().millisecondsSinceEpoch}';
     Uint8List byteData = await _getByteData(widget.image);
     FirebaseAuth auth = FirebaseAuth.instance;
     FirebaseUser user = await auth.currentUser();
     if (user == null) await auth.signInAnonymously();
-    String fileName = "$timestamp-${Random().nextInt(10000)}.jpg";
-    StorageReference ref = FirebaseStorage.instance.ref().child("stores/cover-image/$fileName");
+    String fileName = '$timestamp-${Random().nextInt(10000)}.jpg';
+    StorageReference ref = FirebaseStorage.instance.ref().child('stores/cover-image/$fileName');
     Tuple2<StorageUploadTask, StorageReference> task =
         Tuple2(ref.putData(byteData, StorageMetadata(customMetadata: {'secret': 'breadcat'})), ref);
     await task.item1.onComplete;

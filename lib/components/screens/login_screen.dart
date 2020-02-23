@@ -11,7 +11,6 @@ import 'package:butter/utils/general_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -19,7 +18,10 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, dynamic>(
-      converter: (Store<AppState> store) => (u, s) => store.dispatch(LoginSuccess(u, s)),
+      converter: (Store<AppState> store) => (u, s) {
+        store.dispatch(LoginSuccess(u, s));
+        store.dispatch(CheckFcmToken());
+      },
       builder: (context, loginSuccess) => _Presenter(loginSuccess: loginSuccess),
     );
   }
@@ -40,8 +42,6 @@ class _PresenterState extends State<_Presenter> {
 
   @override
   Widget build(BuildContext context) {
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -75,7 +75,7 @@ class _PresenterState extends State<_Presenter> {
         _textField('Password', (val) => setState(() => _pw = val), true),
         _forgotPassword(context),
         Container(height: 30.0),
-        WhiteButton(text: "Login", onPressed: () => _submit(context)),
+        WhiteButton(text: 'Login', onPressed: () => _submit(context)),
         _signUp(context),
         _privacy(context),
       ],

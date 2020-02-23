@@ -1,67 +1,79 @@
-import 'package:butter/models/admin.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/models/reward.dart';
 import 'package:butter/models/store.dart';
+import 'package:butter/models/user.dart';
 import 'package:butter/services/toaster.dart';
 
 class MeService {
   const MeService();
 
-  static Future<Map<String, dynamic>> register(String username, String password) async {
+  static Future<User> register(String email, String username, String password) async {
     String query = """
       mutation {
-        addAdmin(username: "$username", password: "$password") {
-          ${Admin.attributes}
+        addAdmin(email: "$email", username: "$username", password: "$password") {
+          ${User.attributes}
         }
       }
     """;
     final response = await Toaster.get(query);
     var json = response['addAdmin'];
-    var admin = Admin.fromToaster(json);
-    var store = json != null ? Store.fromToaster(json['store']) : null;
-    return { 'admin': admin, 'store': store };
+    return User.fromProfileToaster(json);
   }
 
   static Future<Map<String, dynamic>> login(String username, String password) async {
     String query = """
       query {
         adminLogin(username: "$username", password: "$password") {
-          ${Admin.attributes}
+          ${User.attributes}
         }
       }
     """;
     final response = await Toaster.get(query);
     var json = response['adminLogin'];
-    var admin = Admin.fromToaster(json);
-    var store = json != null ? Store.fromToaster(json['store']) : null;
+    var admin = User.fromProfileToaster(json);
+    var store = json != null ? Store.fromToaster(json['admin']['store']) : null;
     return { 'admin': admin, 'store': store };
   }
 
   static Future<Store> fetchStoreByAdminId(int adminId) async {
     String query = """
       query {
-        findAdminById(id: $adminId) {
-          ${Admin.attributes}
+        adminById(id: $adminId) {
+          store {
+            ${Store.attributes}
+          }
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['findAdminById'];
+    var json = response['adminById'];
     return json != null ? Store.fromToaster(json['store']) : null;
   }
 
-  static Future<int> getAdminIdByUsername(String username) async {
+  static Future<int> getUserIdByUsername(String username) async {
     String query = """
       query {
-        findAdminByUsername(username: "$username") {
+        userProfileByUsername(username: "$username") {
+          user_id
+        }
+      }
+    """;
+    final response = await Toaster.get(query);
+    var json = response['userProfileByUsername'];
+    return json != null ? json['user_id'] : null;
+  }
+
+  static Future<int> getUserIdByEmail(String email) async {
+    String query = """
+      query {
+        userAccountByEmail(email: "$email") {
           id
         }
       }
     """;
     final response = await Toaster.get(query);
-    var json = response['findAdminByUsername'];
-    var userId = json != null ? json['id'] : null;
-    return userId;
+    var json = response['userAccountByEmail'];
+    return json != null ? json['id'] : null;
   }
 
   static Future<List<Post>> fetchPostsByStoreId({int storeId, int limit, int offset}) async {
@@ -114,5 +126,18 @@ class MeService {
     final response = await Toaster.get(query);
     var json = response['setStoreCoverImage'];
     return pictureUrl == json['cover_image'];
+  }
+
+  Future<bool> setFcmToken({userId, token}) async {
+    String query = """
+      mutation {
+        setFcmToken(userId: $userId, token: "$token") {
+          fcm_token
+        }
+      }
+    """;
+    final response = await Toaster.get(query);
+    var json = response['setFcmToken'];
+    return token == json['fcm_token'];
   }
 }

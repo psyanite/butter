@@ -1,8 +1,10 @@
 import 'package:butter/models/post.dart';
-import 'package:butter/utils/enum_util.dart';
+import 'package:butter/models/store.dart';
 
 class User {
   final int id;
+  final int adminId;
+  final int storeId;
   final String username;
   final String firstName;
   final String lastName;
@@ -10,13 +12,13 @@ class User {
   final String email;
   final String profilePicture;
   final String tagline;
-  final SocialType socialType;
-  final String socialId;
-  final String token;
+  final String fcmToken;
   final List<Post> posts;
 
   User({
     this.id,
+    this.adminId,
+    this.storeId,
     this.username,
     this.firstName,
     this.lastName,
@@ -24,42 +26,23 @@ class User {
     this.email,
     this.profilePicture,
     this.tagline,
-    this.socialType,
-    this.socialId,
-    this.token,
+    this.fcmToken,
     this.posts,
   });
 
-  User copyWith({int id, String username, String profilePicture, String displayName, List<Post> posts, String tagline}) {
+  User copyWith({int id, String username, String profilePicture, String fcmToken, String storeId}) {
     return User(
       id: id ?? this.id,
+      adminId: this.adminId,
+      storeId: storeId ?? this.storeId,
       username: username ?? this.username,
-      firstName: firstName,
-      lastName: lastName,
-      displayName: displayName ?? this.displayName,
-      email: email,
-      profilePicture: profilePicture ?? this.profilePicture,
-      tagline: tagline ?? this.tagline,
-      socialType: socialType,
-      socialId: socialId,
-      token: token,
-      posts: posts ?? this.posts,
-    );
-  }
-
-  User setTagline(String tagline) {
-    return User(
-      id: id,
-      username: username,
       firstName: firstName,
       lastName: lastName,
       displayName: displayName,
       email: email,
-      profilePicture: profilePicture,
+      profilePicture: profilePicture ?? this.profilePicture,
       tagline: tagline,
-      socialType: socialType,
-      socialId: socialId,
-      token: token,
+      fcmToken: fcmToken ?? this.fcmToken,
       posts: posts,
     );
   }
@@ -67,32 +50,26 @@ class User {
   Map<String, dynamic> toPersist() {
     return <String, dynamic>{
       'id': this.id,
+      'adminId': this.adminId,
+      'storeId': this.storeId,
       'username': this.username,
       'firstName': this.firstName,
       'lastName': this.lastName,
-      'displayName': this.displayName,
       'email': this.email,
-      'profilePicture': this.profilePicture,
-      'tagline': this.tagline,
-      'socialType': EnumUtil.format(this.socialType.toString()),
-      'socialId': this.socialId,
-      'token': this.token,
+      'fcmToken': this.fcmToken,
     };
   }
 
   factory User.rehydrate(Map<String, dynamic> json) {
     return User(
       id: json['id'],
+      adminId: json['adminId'],
+      storeId: json['storeId'],
       username: json['username'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      displayName: json['displayName'],
       email: json['email'],
-      profilePicture: json['profilePicture'],
-      tagline: json['tagline'],
-      socialType: EnumUtil.fromString(SocialType.values, json['socialType']),
-      socialId: json['socialId'],
-      token: json['token'],
+      fcmToken: json['fcmToken'],
     );
   }
 
@@ -111,32 +88,44 @@ class User {
 
   factory User.fromProfileToaster(Map<String, dynamic> json) {
     if (json == null) return null;
+    var admin = json['admin'];
+    var account = json['user_account'];
     return User(
       id: json['user_id'],
+      adminId: admin != null ? admin['id'] : null,
+      storeId: admin != null ? admin['store_id'] : null,
       username: json['username'],
       displayName: json['preferred_name'],
+      email: account != null ? account['email'] : null,
       profilePicture: json['profile_picture'],
       tagline: json['tagline'],
+      fcmToken: json['fcmToken'],
     );
   }
 
-  factory User.fromFacebook(String token, Map<String, dynamic> json) {
-    return User(
-      firstName: json['first_name'],
-      lastName: json['last_name'],
-      displayName: json['name'],
-      email: json['email'],
-      profilePicture: json['picture']['data']['url'],
-      socialType: SocialType.facebook,
-      socialId: json['id'],
-      token: token,
-    );
+  static const attributes = """
+    user_id,
+    admin {
+      id,
+      store {
+        ${Store.attributes}
+      },
+    },
+    username,
+    first_name,
+    last_name,
+    user_account {
+      email,
+    },
+    fcm_token,    
+  """;
+
+  bool isAdmin() {
+    return storeId != null;
   }
 
   @override
   String toString() {
-    return '{ id: $id, socialType: $socialType, socialId: $socialId, displayName: $displayName, username: $username, email: $email }';
+    return '{ id: $id, username: $username, storeId: $storeId }';
   }
 }
-
-enum SocialType { facebook, google }

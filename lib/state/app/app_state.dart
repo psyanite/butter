@@ -1,3 +1,4 @@
+import 'package:butter/services/log.dart';
 import 'package:butter/state/comment/comment_state.dart';
 import 'package:butter/state/error/error_state.dart';
 import 'package:butter/state/me/favorite/favorite_state.dart';
@@ -15,7 +16,7 @@ class AppState {
 
   AppState({MeState me, UserState user, CommentState comment, FavoriteState favorite, ErrorState error})
       : me = me ?? MeState.initialState(),
-        user = user ?? UserState(),
+        user = user ?? UserState.initialState(),
         comment = comment ?? CommentState.initialState(),
         favorite = favorite ?? FavoriteState.initialState(),
         error = error ?? ErrorState();
@@ -27,8 +28,8 @@ class AppState {
         me: json['me'] != null ? MeState.rehydrate(json['me']) : MeState.initialState()
       );
     }
-    catch (e) {
-      print("Could not deserialize json from persistor: $e");
+    catch (e, stack) {
+      Log.error('Could not deserialize json from persistor: $e, $stack');
       return AppState();
     }
   }

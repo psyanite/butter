@@ -12,10 +12,11 @@ Reducer<MeState> meReducer = combineReducers([
   new TypedReducer<MeState, FetchPostsSuccess>(fetchPosts),
   new TypedReducer<MeState, FetchRewardsSuccess>(fetchRewards),
   new TypedReducer<MeState, SetCoverImage>(setCoverImage),
+  new TypedReducer<MeState, SetFcmToken>(setFcmToken),
 ]);
 
 MeState loginSuccess(MeState state, LoginSuccess action) {
-  return MeState.initialState().copyWith(admin: action.admin, store: action.store);
+  return MeState.initialState().copyWith(user: action.user, store: action.store);
 }
 
 MeState logout(MeState state, Logout action) {
@@ -40,4 +41,8 @@ MeState fetchRewards(MeState state, FetchRewardsSuccess action) {
 
 MeState setCoverImage(MeState state, SetCoverImage action) {
   return state.copyWith(store: state.store.copyWith(coverImage: action.picture));
+}
+
+MeState setFcmToken(MeState state, SetFcmToken action) {
+  return state.copyWith(user: state.user.copyWith(fcmToken: action.token));
 }

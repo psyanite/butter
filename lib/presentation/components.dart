@@ -1,6 +1,7 @@
 import 'package:butter/models/post.dart';
 import 'package:butter/presentation/crust_cons_icons.dart';
 import 'package:butter/presentation/theme.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -406,6 +407,40 @@ class HeartIcon extends StatelessWidget {
       assetName,
       width: size,
       height: size,
+    );
+  }
+}
+
+class NetworkImg extends StatelessWidget {
+  final String url;
+  final double width;
+  final double height;
+  final EdgeInsets padding;
+  final EdgeInsets margin;
+  final BoxFit fit;
+
+  NetworkImg(this.url, {Key key, this.width, this.height, this.padding, this.margin, this.fit = BoxFit.cover}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    if (url == null || url.isEmpty) {
+      return Container(
+        width: width,
+        height: height,
+        padding: padding,
+        margin: margin,
+        color: Burnt.imgPlaceholderColor,
+      );
+    }
+    return Container(
+      width: width,
+      height: height,
+      padding: padding,
+      margin: margin,
+      decoration: BoxDecoration(
+        color: Burnt.imgPlaceholderColor,
+        image: DecorationImage(image: CachedNetworkImageProvider(url), fit: BoxFit.cover),
+      ),
     );
   }
 }

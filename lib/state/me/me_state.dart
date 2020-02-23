@@ -1,35 +1,35 @@
 import 'dart:collection';
 
-import 'package:butter/models/admin.dart';
 import 'package:butter/models/post.dart';
 import 'package:butter/models/reward.dart';
+import 'package:butter/models/user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 import 'package:butter/models/store.dart' as MyStore;
 
 @immutable
 class MeState {
-  final Admin admin;
+  final User user;
   final MyStore.Store store;
   final LinkedHashMap<int, Post> posts;
   final LinkedHashMap<int, Reward> rewards;
 
-  MeState({this.admin, this.store, this.posts, this.rewards});
+  MeState({this.user, this.store, this.posts, this.rewards});
 
   MeState.initialState()
-      : admin = null,
+      : user = null,
         store = null,
         posts = LinkedHashMap<int, Post>(),
         rewards = LinkedHashMap<int, Reward>();
 
   MeState copyWith({
-    Admin admin,
+    User user,
     MyStore.Store store,
     LinkedHashMap<int, Post> posts,
     LinkedHashMap<int, Reward> rewards,
   }) {
     return MeState(
-      admin: admin ?? this.admin,
+      user: user ?? this.user,
       store: store ?? this.store,
       posts: posts ?? this.posts,
       rewards: rewards ?? this.rewards,
@@ -37,13 +37,13 @@ class MeState {
   }
 
   factory MeState.rehydrate(Map<String, dynamic> json) {
-    var admin = json['admin'];
-    return MeState.initialState().copyWith(admin: admin != null ? Admin.rehydrate(admin) : null);
+    var user = json['user'];
+    return MeState.initialState().copyWith(user: user != null ? User.rehydrate(user) : null);
   }
 
   Map<String, dynamic> toPersist() {
     return <String, dynamic>{
-      'admin': this.admin?.toPersist(),
+      'user': this.user?.toPersist(),
     };
   }
 
@@ -66,7 +66,7 @@ class MeState {
   @override
   String toString() {
     return '''{
-        admin: $admin, store: ${store != null ? store.id : null}, posts: ${posts.length}
+        user: $user, store: ${store != null ? store.id : null}, posts: ${posts.length}
       }''';
   }
 }
