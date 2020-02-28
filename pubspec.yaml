@@ -7,7 +7,7 @@ environment:
 
 dependencies:
 
-  # Flutter
+  # Flutter v1.12.13+hotfix.7
   flutter:
     sdk: flutter
 

@@ -4,6 +4,7 @@ import 'package:butter/components/screens/register_screen.dart';
 import 'package:butter/components/screens/terms_screen.dart';
 import 'package:butter/main.dart';
 import 'package:butter/presentation/components.dart';
+import 'package:butter/presentation/theme.dart';
 import 'package:butter/state/app/app_state.dart';
 import 'package:butter/state/me/me_actions.dart';
 import 'package:butter/state/me/me_service.dart';
@@ -45,12 +46,7 @@ class _PresenterState extends State<_Presenter> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [0, 0.6, 1.0],
-            colors: [Color(0xFFffc86b), Color(0xFFffab40), Color(0xFFc45d35)],
-          ),
+          gradient: Burnt.burntGradient,
         ),
         child: Builder(builder: (context) {
           return Padding(

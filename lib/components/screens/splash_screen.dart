@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:butter/main.dart';
+import 'package:butter/presentation/theme.dart';
 import 'package:butter/state/app/app_state.dart';
 import 'package:butter/state/error/error_actions.dart';
 import 'package:butter/state/me/me_actions.dart';
@@ -70,12 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Image.asset('assets/images/loading-icon.png', height: 200.0),
         ),
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            stops: [0, 0.6, 1.0],
-            colors: [Color(0xFFffc86b), Color(0xFFffab40), Color(0xFFc45d35)],
-          ),
+          gradient: Burnt.burntGradient,
         ),
       ),
     );
