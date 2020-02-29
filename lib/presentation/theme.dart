@@ -49,4 +49,10 @@ class Burnt {
     stops: [0, 0.6, 1.0],
     colors: [Color(0xFFFFC86B), Color(0xFFFFAB40), Color(0xFFC45D35)],
   );
+  static const splashGradient = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [0, 0.3, 1.0],
+    colors: [Color(0xFF97defc), Color(0xFF5ac1ed), Color(0xFF22afe6)],
+  );
 }

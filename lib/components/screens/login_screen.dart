@@ -46,7 +46,7 @@ class _PresenterState extends State<_Presenter> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          gradient: Burnt.burntGradient,
+          gradient: Burnt.splashGradient,
         ),
         child: Builder(builder: (context) {
           return Padding(

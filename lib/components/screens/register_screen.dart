@@ -44,7 +44,7 @@ class _PresenterState extends State<_Presenter> {
         builder: (context) {
           return Container(
             decoration: BoxDecoration(
-              gradient: Burnt.burntGradient,
+              gradient: Burnt.splashGradient,
             ),
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: 16.0),

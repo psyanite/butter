@@ -71,7 +71,7 @@ class _SplashScreenState extends State<SplashScreen> {
           child: Image.asset('assets/images/loading-icon.png', height: 200.0),
         ),
         decoration: BoxDecoration(
-          gradient: Burnt.burntGradient,
+          gradient: Burnt.splashGradient,
         ),
       ),
     );
