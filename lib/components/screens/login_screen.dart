@@ -71,7 +71,7 @@ class _PresenterState extends State<_Presenter> {
         _textField('Password', (val) => setState(() => _pw = val), true),
         _forgotPassword(context),
         Container(height: 30.0),
-        WhiteButton(text: 'Login', onPressed: () => _submit(context)),
+        WhiteButton(text: 'Login', textColor: Burnt.dullBlue, onPressed: () => _submit(context)),
         _signUp(context),
         _privacy(context),
       ],

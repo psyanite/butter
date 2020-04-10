@@ -107,9 +107,10 @@ class SmallSolidButton extends StatelessWidget {
 
 class WhiteButton extends StatelessWidget {
   final String text;
+  final Color textColor;
   final Function onPressed;
 
-  WhiteButton({Key key, this.text, this.onPressed}) : super(key: key);
+  WhiteButton({Key key, this.text, this.textColor = Burnt.primary, this.onPressed}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +130,7 @@ class WhiteButton extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              Text(text, style: TextStyle(fontSize: 20.0, color: Burnt.primary)),
+              Text(text, style: TextStyle(fontSize: 20.0, color: textColor)),
             ],
           ),
         ),

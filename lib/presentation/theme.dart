@@ -22,6 +22,7 @@ class Burnt {
   static const lightBlue = Color(0x6C007AFF);
   static const blue = Color(0xFF007AFF);
   static const darkBlue = Color(0xFF4A83C4);
+  static const dullBlue = Color(0xFF22afe6);
 
   /// Fonts
   static const fontBase = 'PTSans';
