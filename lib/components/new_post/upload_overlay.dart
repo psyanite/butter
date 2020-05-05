@@ -97,7 +97,7 @@ class UploadOverlayState extends State<UploadOverlay> {
     List<Tuple2<StorageUploadTask, StorageReference>> tasks = byteData.map((bd) {
       String fileName = '$timestamp-${Random().nextInt(10000)}.jpg';
       StorageReference ref = FirebaseStorage.instance.ref().child('reviews/post-photos/$fileName');
-      return Tuple2(ref.putData(bd, StorageMetadata(customMetadata: {'secret': 'breadcat'})), ref);
+      return Tuple2(ref.putData(bd, StorageMetadata(contentType: "image/jpeg", customMetadata: {'secret': 'breadcat'})), ref);
     }).toList(growable: false);
 
     setState(() => loadingText = 'Uploading photos to the cloud…' );
