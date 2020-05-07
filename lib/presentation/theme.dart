@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class Burnt {
 
   /// Colors
-  static const materialPrimary = Colors.orange;
-  static const primary = Color(0xFFFFAB40);
+  static const materialPrimary = Colors.lightBlue;
+//  static const primary = Color(0xFFFFAB40);
+  static const primary = Color(0xFF529EF5);
   static const primaryLight = Color(0xFFFFC86B);
   static const primaryExtraLight = Color(0xFFFFD173);
   static const textBodyColor = Color(0xDD604B41);
@@ -22,7 +23,7 @@ class Burnt {
   static const lightBlue = Color(0x6C007AFF);
   static const blue = Color(0xFF007AFF);
   static const darkBlue = Color(0xFF4A83C4);
-  static const dullBlue = Color(0xFF22afe6);
+  static const dullBlue = Color(0xFF22AFE6);
 
   /// Fonts
   static const fontBase = 'PTSans';
@@ -46,14 +47,14 @@ class Burnt {
   );
   static const buttonGradient = LinearGradient(
     begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-    stops: [0, 0.6, 1.0],
-    colors: [Color(0xFFFFC86B), Color(0xFFFFAB40), Color(0xFFC45D35)],
+      end: Alignment.bottomRight,
+    stops: [0, 0.3],
+    colors: [Color(0xFFFFC86B), Color(0xFFFFB655)],
   );
   static const splashGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     stops: [0, 0.3, 1.0],
-    colors: [Color(0xFF97defc), Color(0xFF5ac1ed), Color(0xFF22afe6)],
+    colors: [Color(0xFF97DEFC), Color(0xFF5AC1ED), Color(0xFF22AFE6)],
   );
 }

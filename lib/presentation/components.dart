@@ -56,6 +56,7 @@ class SmallButton extends StatelessWidget {
   final Function onTap;
   final EdgeInsetsGeometry padding;
   final Gradient gradient;
+  final Color color;
 
   SmallButton({
     Key key,
@@ -63,6 +64,7 @@ class SmallButton extends StatelessWidget {
     this.onTap,
     this.padding,
     this.gradient = Burnt.buttonGradient,
+    this.color,
   }) : super(key: key);
 
   @override
@@ -71,7 +73,11 @@ class SmallButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: padding,
-        decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(2.0)), gradient: gradient),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(2.0)),
+          gradient: color != null ? null : gradient,
+          color: color,
+        ),
         child: child,
       ),
     );
@@ -189,8 +195,8 @@ class BurntButton extends StatelessWidget {
             gradient: LinearGradient(
               begin: Alignment.bottomLeft,
               end: Alignment.topRight,
-              stops: [0, 0.6, 1.0],
-              colors: [Color(0xFFFFAB40), Color(0xFFFFAB40), Color(0xFFFFC86B)],
+              stops: [0, 0.3],
+              colors: [Color(0xFF97DEFC), Color(0xFF5AC1ED)],
             )),
         child: Row(
           mainAxisSize: MainAxisSize.max,

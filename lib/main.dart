@@ -75,7 +75,7 @@ class Main extends StatelessWidget {
       child: MaterialApp(
         title: 'Burntoast Promote',
         debugShowCheckedModeBanner: false,
-        color: Color(0xFFF2993E),
+        color: Color(0xFF529EF5),
         theme: getTheme(context),
         initialRoute: MainRoutes.splash,
         routes: <String, WidgetBuilder>{

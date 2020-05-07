@@ -48,7 +48,7 @@ class MainTabNavigatorState extends State<MainTabNavigator> {
           child: CupertinoTabBar(
             border: Border(top: BorderSide(color: Burnt.separator)),
             backgroundColor: Burnt.paper,
-            activeColor: Burnt.primary,
+            activeColor: Burnt.lightBlue,
             inactiveColor: Burnt.lightGrey,
             currentIndex: _currentIndex,
             onTap: _jumpToPage,
