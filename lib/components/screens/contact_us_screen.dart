@@ -24,7 +24,7 @@ class ContactUsScreen extends StatelessWidget {
   }
 
   Widget _presenter(context, String username, Function logout) {
-    var email = () => launch(Utils.buildEmail('Register Success', 'Request for complete setup process.\n\nUsername: $username'));
+    var email = () => launch(Utils.buildEmail('Register Success', 'Request for complete setup process.<br><br>Username: $username'));
     return Scaffold(
       body: Center(
         child: Padding(

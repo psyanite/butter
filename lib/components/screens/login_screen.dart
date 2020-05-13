@@ -128,7 +128,7 @@ class _PresenterState extends State<_Presenter> {
   Widget _forgotDialog(BuildContext context) {
     var close = () => Navigator.of(context, rootNavigator: true).pop(true);
     var send = () {
-      launch(Utils.buildEmail('Forgot Password', 'Username: <please-enter-your-username>\n\nRequest for retrieving temporary password.'));
+      launch(Utils.buildEmail('Forgot Password', 'I\'d like to request my temporary password. <br><br>My Username: '));
       close();
     };
     var options = <DialogOption>[

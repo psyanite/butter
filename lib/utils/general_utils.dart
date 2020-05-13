@@ -61,6 +61,8 @@ class Utils {
   }
 
   static String buildEmail(String subject, String body) {
-    return 'mailto:burntoastfix@gmail.com?subject=$subject&body=Hi there,\n\n\n$body';
+    var encodedSubject = Uri.encodeComponent(subject);
+    var encodedBody = Uri.encodeComponent('Hi there,<br><br>$body');
+    return 'mailto:burntoastfix@gmail.com?subject=$encodedSubject&body=$encodedBody';
   }
 }
