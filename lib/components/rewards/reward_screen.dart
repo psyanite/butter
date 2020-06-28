@@ -90,6 +90,7 @@ class RewardScreen extends StatelessWidget {
           _termsAndConditions(),
           Container(height: 20.0),
           _qrCode(),
+          Container(height: 300.0),
         ],
       ),
     );
