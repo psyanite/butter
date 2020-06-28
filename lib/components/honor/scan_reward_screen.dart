@@ -20,15 +20,15 @@ class ScanRewardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, dynamic>(
       converter: (Store<AppState> store) => _Props.fromStore(store),
-      builder: (context, props) => _Presenter(myId: props.myId),
+      builder: (context, props) => _Presenter(myAdminId: props.myAdminId),
     );
   }
 }
 
 class _Presenter extends StatefulWidget {
-  final int myId;
+  final int myAdminId;
 
-  _Presenter({Key key, this.myId}) : super(key: key);
+  _Presenter({Key key, this.myAdminId}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _PresenterState();
@@ -41,7 +41,7 @@ class _PresenterState extends State<_Presenter> {
     var code = await _scan();
     if (code == null) return;
 
-    var result = await RewardService.canHonorUserReward(widget.myId, code);
+    var result = await RewardService.canHonorUserReward(widget.myAdminId, code);
     var error = result['error'];
     if (error != null) {
       var userReward = await RewardService.fetchUserRewardByCode(code);
@@ -57,7 +57,7 @@ class _PresenterState extends State<_Presenter> {
       }
       return;
     }
-    var userReward = result['userReward'] as UserReward;
+      var userReward = result['userReward'] as UserReward;
     if (userReward == null) {
       Toaster.logError('Validate Reward', 'Could not parse userReward: $userReward');
       _setError('Oops! Something went wrong, please contact support.');
@@ -90,6 +90,7 @@ class _PresenterState extends State<_Presenter> {
     } on FormatException {
       // Back button pressed, do nothing.
     } catch (e) {
+      print(e);
       _setErrorCode('4010');
     }
     return null;
@@ -159,13 +160,13 @@ class _PresenterState extends State<_Presenter> {
 }
 
 class _Props {
-  final int myId;
+  final int myAdminId;
 
-  _Props({this.myId});
+  _Props({this.myAdminId});
 
   static fromStore(Store<AppState> store) {
     return _Props(
-      myId: store.state.me.user.id,
+      myAdminId: store.state.me.user.adminId,
     );
   }
 }
