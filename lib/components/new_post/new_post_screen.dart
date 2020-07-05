@@ -74,6 +74,12 @@ class _PresenterState extends State<_Presenter> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+              Stack(
+                children: <Widget>[
+                  Container(width: 50.0, height: 60.0),
+                  Positioned(left: -12.0, child: BackArrow(color: Burnt.lightGrey)),
+                ],
+              ),
               Row(
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.center,
