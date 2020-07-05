@@ -1,9 +1,13 @@
+import 'package:butter/presentation/components.dart';
+import 'package:butter/presentation/theme.dart';
 import 'package:flutter/material.dart';
 
 class PrivacyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var child = Column(children: <Widget>[
+    var child = Column(crossAxisAlignment: CrossAxisAlignment.start, children: <Widget>[
+      Container(width: 50.0, height: 60.0),
+      BackArrow(color: Burnt.lightGrey),
       Container(height: 20.0),
       _text('Privacy Policy'),
       _text('Before we get into the detail, we just want to make sure you know that your privacy is important to us. We know you’ve heard this all before, but quite frankly, we mean it. You’ve placed your trust in us by using the UNiDAYS services and we value that trust. That means we’re committed to protecting and safeguarding any personal data you give us.\nSo anyway, here we go with the detail. This Privacy Policy explains who we are, how and why we collect, share and use personal information about you, and how you can exercise your privacy rights. If you have any questions, or any confusions about our use of your personal information, please contact us using the contact details provided on the “How to contact us” section below.'),
