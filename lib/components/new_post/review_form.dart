@@ -216,7 +216,7 @@ class _PresenterState extends State<_Presenter> {
             padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(2.0),
-              gradient: Burnt.burntGradient,
+              color: Burnt.splashButton,
             ),
             child: Text('SUBMIT', style: TextStyle(fontSize: 16.0, color: Colors.white, letterSpacing: 3.0)),
           ),

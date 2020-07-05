@@ -227,7 +227,7 @@ class _PresenterState extends State<EditPostScreen> {
                 padding: EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(2.0),
-                  gradient: Burnt.burntGradient,
+                  color: Burnt.splashButton,
                 ),
                 child: Row(
                   mainAxisSize: MainAxisSize.max,

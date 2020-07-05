@@ -24,6 +24,11 @@ class Burnt {
   static const blue = Color(0xFF007AFF);
   static const darkBlue = Color(0xFF4A83C4);
   static const dullBlue = Color(0xFF22AFE6);
+  static const splashButton = Color(0xFF76CFF6);
+  static const splashGrad1 = Color(0xFF97DEFC);
+  static const splashGrad2 = Color(0xFF5AC1ED);
+  static const splashGrad3 = Color(0xFF22AFE6);
+
 
   /// Fonts
   static const fontBase = 'PTSans';
@@ -55,6 +60,13 @@ class Burnt {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     stops: [0, 0.3, 1.0],
-    colors: [Color(0xFF97DEFC), Color(0xFF5AC1ED), Color(0xFF22AFE6)],
+    colors: [splashGrad1, splashGrad2, splashGrad3],
   );
+  static const splashGradientDuo = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    stops: [0, 1.0],
+    colors: [splashGrad1, splashGrad2],
+  );
+
 }
