@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:butter/components/common/store_banner.dart';
-import 'package:butter/components/new_post/review_form.dart';
+import 'package:butter/components/new_post/new_post_screen.dart';
 import 'package:butter/components/post_list/post_list.dart';
 import 'package:butter/components/rewards/reward_swiper.dart';
 import 'package:butter/models/post.dart';
@@ -267,7 +267,7 @@ class _PresenterState extends State<_Presenter> {
           padding: 15.0,
           fontSize: 20.0,
           onPressed: () {
-            Navigator.push(context, MaterialPageRoute(builder: (_) => ReviewForm()));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => NewPostScreen()));
           },
         ),
       ),

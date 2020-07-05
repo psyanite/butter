@@ -14,7 +14,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:multi_image_picker/multi_image_picker.dart';
 import 'package:redux/redux.dart';
 
-class ReviewForm extends StatelessWidget {
+class NewPostScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, _Props>(
